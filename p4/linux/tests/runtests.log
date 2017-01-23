@@ -1,0 +1,245 @@
+starting build
+
+**********************************************************************
+
+Test build
+build project using make
+
+**********************************************************************
+Trying to clean project using make clean
+make clean
+rm -f runtests
+rm -f *.pyc
+Trying to build project using make
+make
+echo "#!/bin/bash" > runtests
+echo "base=~cs537-1/ta/tests/4a" >> runtests
+echo "python \$base/project4a.py --test-path \$base \$@ |"\
+		"tee -i runtests.log" >> runtests
+echo "exit \$?" >> runtests
+chmod a+x runtests
+
+
+test build FAILED
+ (build project using make)
+ required file 'server' does not exist after make
+
+starting basic
+
+**********************************************************************
+
+Test basic
+check if the webserver can serve requests
+
+**********************************************************************
+Starting server on port 7222
+/tmp/tmpgams3z/p/server 7222 1 1
+OSError: [Errno 2] No such file or directory
+
+
+test basic FAILED (0 of 4)
+ (check if the webserver can serve requests)
+ Unexpected exception [Errno 2] No such file or directory
+
+starting argport
+
+**********************************************************************
+
+Test argport
+invalid port number
+
+**********************************************************************
+Starting server on port 22
+/tmp/tmpgams3z/p/server 22 1 1
+OSError: [Errno 2] No such file or directory
+
+
+test argport FAILED (0 of 2)
+ (invalid port number)
+ Unexpected exception [Errno 2] No such file or directory
+
+starting nobusywait
+
+**********************************************************************
+
+Test nobusywait
+test to make sure you are not busy-waiting
+
+**********************************************************************
+Starting server on port 9344
+/tmp/tmpgams3z/p/server 9344 10 1
+OSError: [Errno 2] No such file or directory
+
+
+test nobusywait FAILED (0 of 15)
+ (test to make sure you are not busy-waiting)
+ Unexpected exception [Errno 2] No such file or directory
+
+starting pool2
+
+**********************************************************************
+
+Test pool2
+check if using a fixed size thread pool
+
+**********************************************************************
+Starting server on port 8236
+/tmp/tmpgams3z/p/server 8236 3 8
+OSError: [Errno 2] No such file or directory
+
+
+test pool2 FAILED (0 of 5)
+ (check if using a fixed size thread pool)
+ Unexpected exception [Errno 2] No such file or directory
+
+starting single
+
+**********************************************************************
+
+Test single
+single thread serving many requests
+
+**********************************************************************
+Starting server on port 7021
+/tmp/tmpgams3z/p/server 7021 1 30
+OSError: [Errno 2] No such file or directory
+
+
+test single FAILED (0 of 5)
+ (single thread serving many requests)
+ Unexpected exception [Errno 2] No such file or directory
+
+starting light
+
+**********************************************************************
+
+Test light
+light request load
+
+**********************************************************************
+Starting server on port 7524
+/tmp/tmpgams3z/p/server 7524 20 10
+OSError: [Errno 2] No such file or directory
+
+
+test light FAILED (0 of 5)
+ (light request load)
+ Unexpected exception [Errno 2] No such file or directory
+
+starting locks
+
+**********************************************************************
+
+Test locks
+many concurrent requests to test locking
+
+**********************************************************************
+Starting server on port 5420
+/tmp/tmpgams3z/p/server 5420 8 16
+OSError: [Errno 2] No such file or directory
+
+
+test locks FAILED (0 of 5)
+ (many concurrent requests to test locking)
+ Unexpected exception [Errno 2] No such file or directory
+
+starting locks3
+
+**********************************************************************
+
+Test locks3
+many concurrent requests to test locking
+
+**********************************************************************
+Starting server on port 7278
+/tmp/tmpgams3z/p/server 7278 64 128
+OSError: [Errno 2] No such file or directory
+
+
+test locks3 FAILED (0 of 5)
+ (many concurrent requests to test locking)
+ Unexpected exception [Errno 2] No such file or directory
+
+starting equal2
+
+**********************************************************************
+
+Test equal2
+equal buffers and threads
+
+**********************************************************************
+Starting server on port 6004
+/tmp/tmpgams3z/p/server 6004 32 32
+OSError: [Errno 2] No such file or directory
+
+
+test equal2 FAILED (0 of 5)
+ (equal buffers and threads)
+ Unexpected exception [Errno 2] No such file or directory
+
+starting fewer
+
+**********************************************************************
+
+Test fewer
+fewer buffers than threads
+
+**********************************************************************
+Starting server on port 9562
+/tmp/tmpgams3z/p/server 9562 16 8
+OSError: [Errno 2] No such file or directory
+
+
+test fewer FAILED (0 of 5)
+ (fewer buffers than threads)
+ Unexpected exception [Errno 2] No such file or directory
+
+**********************************************************************
+Summary:
+test build FAILED
+ (build project using make)
+ required file 'server' does not exist after make
+
+test basic FAILED (0 of 4)
+ (check if the webserver can serve requests)
+ Unexpected exception [Errno 2] No such file or directory
+
+test argport FAILED (0 of 2)
+ (invalid port number)
+ Unexpected exception [Errno 2] No such file or directory
+
+test nobusywait FAILED (0 of 15)
+ (test to make sure you are not busy-waiting)
+ Unexpected exception [Errno 2] No such file or directory
+
+test pool2 FAILED (0 of 5)
+ (check if using a fixed size thread pool)
+ Unexpected exception [Errno 2] No such file or directory
+
+test single FAILED (0 of 5)
+ (single thread serving many requests)
+ Unexpected exception [Errno 2] No such file or directory
+
+test light FAILED (0 of 5)
+ (light request load)
+ Unexpected exception [Errno 2] No such file or directory
+
+test locks FAILED (0 of 5)
+ (many concurrent requests to test locking)
+ Unexpected exception [Errno 2] No such file or directory
+
+test locks3 FAILED (0 of 5)
+ (many concurrent requests to test locking)
+ Unexpected exception [Errno 2] No such file or directory
+
+test equal2 FAILED (0 of 5)
+ (equal buffers and threads)
+ Unexpected exception [Errno 2] No such file or directory
+
+test fewer FAILED (0 of 5)
+ (fewer buffers than threads)
+ Unexpected exception [Errno 2] No such file or directory
+
+Passed 0 of 11 tests.
+Overall 0 of 11
+Points 0 of 56

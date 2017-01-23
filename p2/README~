@@ -1,0 +1,27 @@
+PART A
+Author: VISHNU SAI RAO SURESH LOKHANDE
+Campus ID: 9075731522
+CS login: lokhande
+Wisc login: lokhande
+
+The task was to develop a web server. The basic code for the web
+server was provided. Introduced multi-threadedness into the web 
+server functionality. Handled concurrency issues using condition 
+variables. 
+
+PART B
+Author: VISHNU SAI RAO SURESH LOKHANDE
+Campus ID: 9075731522
+CS login: lokhande
+Wisc login: lokhande
+
+Author: KAI LI
+CS login: kail
+Wisc login: kli66
+
+1. Added kernel threads to xv6.
+2. Added system calls to create kernel thread (clone) and to wait
+for kernel thread (wait).
+3. Created a thread library in the user land having the routines
+thread_create and thread_join.
+3. Handled concurrency issues using locks.

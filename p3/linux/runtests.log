@@ -1,0 +1,1911 @@
+starting build
+
+**********************************************************************
+
+Test build
+build project using make
+
+**********************************************************************
+Trying to clean project using make clean
+make clean
+rm -f stats_server stats_client libstats.so stats.o
+Trying to build project using make
+make
+gcc -o stats_server -Wall -g -Werror stats_server.c -lpthread
+gcc -c -fpic stats.c -Wall -g -Werror -lpthread
+gcc -shared -o libstats.so stats.o
+gcc -c -fpic stats.c -Wall -g -Werror -lpthread
+gcc -shared -o libstats.so stats.o
+gcc -o stats_client stats_client.c -Wall -g -Werror -L/tmp/tmpwDR_KX/p -lstats -lpthread
+
+
+test build PASSED
+ (build project using make)
+
+starting linttest
+
+**********************************************************************
+
+Test linttest
+Lint test for C programming style
+
+**********************************************************************
+/u/c/s/cs537-1/ta/tests/3a/../../lint/cpplint.py --extensions c stats.c stats_client.c stats_server.c
+Done processing stats.c
+Done processing stats_client.c
+Done processing stats_server.c
+Total errors found: 0
+
+
+test linttest PASSED (6 of 6)
+ (Lint test for C programming style)
+
+starting clientnoservertest
+
+**********************************************************************
+
+Test clientnoservertest
+Client should exit gracefully if no server is running
+
+**********************************************************************
+running client with: /tmp/tmpwDR_KX/p/stats_client -s 100 -c 100 -k 4324 -p 1
+
+
+test clientnoservertest PASSED (6 of 6)
+ (Client should exit gracefully if no server is running)
+
+starting defaultargstest
+
+**********************************************************************
+
+Test defaultargstest
+Test that client chooses default values for unspecified args
+
+**********************************************************************
+running server with: /tmp/tmpwDR_KX/p/stats_server -k 2007
+running client with: /tmp/tmpwDR_KX/p/stats_client -k 2007
+server output:
+0 16788 /tmp/tmpwDR_KX/ 0 0.00 0
+
+1 16788 /tmp/tmpwDR_KX/ 1 0.50 0
+
+2 16788 /tmp/tmpwDR_KX/ 2 1.00 0
+
+
+
+test defaultargstest PASSED (6 of 6)
+ (Test that client chooses default values for unspecified args)
+
+starting clientservertest
+
+**********************************************************************
+
+Test clientservertest
+Test basic functionality for one client & server
+
+**********************************************************************
+running server with: /tmp/tmpwDR_KX/p/stats_server -k 3495
+running client with: /tmp/tmpwDR_KX/p/stats_client -s 300000000 -c 700000000 -p 1 -k 3495
+server output:
+
+1 16795 /tmp/tmpwDR_KX/ 0 0.00 1
+
+2 16795 /tmp/tmpwDR_KX/ 1 0.70 1
+
+3 16795 /tmp/tmpwDR_KX/ 2 1.40 1
+
+
+
+test clientservertest PASSED (6 of 6)
+ (Test basic functionality for one client & server)
+
+starting twoservers1
+
+**********************************************************************
+
+Test twoservers1
+Check that two servers can run with different keys
+
+**********************************************************************
+running server with: /tmp/tmpwDR_KX/p/stats_server -k 3660
+running server with: /tmp/tmpwDR_KX/p/stats_server -k 8426
+running client with: /tmp/tmpwDR_KX/p/stats_client -k 3660 -p 1 -s 600000000 -c 400000000
+running client with: /tmp/tmpwDR_KX/p/stats_client -p 1 -k 8426 -s 300000000 -c 200000000
+server output:
+
+1 16804 /tmp/tmpwDR_KX/ 0 0.00 1
+
+2 16804 /tmp/tmpwDR_KX/ 1 0.40 1
+
+3 16804 /tmp/tmpwDR_KX/ 2 0.80 1
+
+server output:
+
+1 16805 /tmp/tmpwDR_KX/ 1 0.20 1
+
+2 16805 /tmp/tmpwDR_KX/ 3 0.60 1
+
+3 16805 /tmp/tmpwDR_KX/ 5 1.00 1
+
+
+
+test twoservers1 PASSED (6 of 6)
+ (Check that two servers can run with different keys)
+
+starting twoservers2
+
+**********************************************************************
+
+Test twoservers2
+Check that two servers with same key can't run concurrently
+
+**********************************************************************
+running server with: /tmp/tmpwDR_KX/p/stats_server -k 2033
+running server with: /tmp/tmpwDR_KX/p/stats_server -k 2033
+running client with: /tmp/tmpwDR_KX/p/stats_client -p 1 -s 400000000 -c 600000000 -k 2033
+running client with: /tmp/tmpwDR_KX/p/stats_client -k 2033 -p 1 -c 300000000 -s 200000000
+server output:
+
+
+2 16815 /tmp/tmpwDR_KX/ 0 0.00 1
+2 16816 /tmp/tmpwDR_KX/ 1 0.30 1
+
+3 16815 /tmp/tmpwDR_KX/ 1 0.60 1
+3 16816 /tmp/tmpwDR_KX/ 3 0.90 1
+
+4 16815 /tmp/tmpwDR_KX/ 2 1.20 1
+4 16816 /tmp/tmpwDR_KX/ 5 1.50 1
+
+
+
+test twoservers2 PASSED (6 of 6)
+ (Check that two servers with same key can't run concurrently)
+
+starting twoservers3
+
+**********************************************************************
+
+Test twoservers3
+Check that two servers with same key can run in sequence
+
+**********************************************************************
+running server with: /tmp/tmpwDR_KX/p/stats_server -k 4582
+running client with: /tmp/tmpwDR_KX/p/stats_client -k 4582 -s 300000000 -c 700000000 -p 1
+server output:
+
+1 16823 /tmp/tmpwDR_KX/ 0 0.00 1
+
+2 16823 /tmp/tmpwDR_KX/ 1 0.70 1
+
+3 16823 /tmp/tmpwDR_KX/ 2 1.40 1
+
+running server with: /tmp/tmpwDR_KX/p/stats_server -k 4582
+running client with: /tmp/tmpwDR_KX/p/stats_client -p 1 -c 500000000 -s 500000000 -k 4582
+server output:
+
+1 16826 /tmp/tmpwDR_KX/ 0 0.00 1
+
+2 16826 /tmp/tmpwDR_KX/ 1 0.50 1
+
+3 16826 /tmp/tmpwDR_KX/ 2 1.00 1
+
+
+
+test twoservers3 PASSED (6 of 6)
+ (Check that two servers with same key can run in sequence)
+
+starting manyclients
+
+**********************************************************************
+
+Test manyclients
+Check that up to 16 clients can run concurrently
+
+**********************************************************************
+running server with: /tmp/tmpwDR_KX/p/stats_server -k 1663
+running client with: /tmp/tmpwDR_KX/p/stats_client -k 1663 -p 1 -s 300000000 -c 700000000
+running client with: /tmp/tmpwDR_KX/p/stats_client -c 400000000 -k 1663 -p 1 -s 600000000
+running client with: /tmp/tmpwDR_KX/p/stats_client -s 600000000 -p 1 -c 400000000 -k 1663
+running client with: /tmp/tmpwDR_KX/p/stats_client -c 500000000 -k 1663 -s 500000000 -p 1
+running client with: /tmp/tmpwDR_KX/p/stats_client -s 200000000 -p 1 -k 1663 -c 800000000
+running client with: /tmp/tmpwDR_KX/p/stats_client -c 600000000 -p 1 -k 1663 -s 400000000
+running client with: /tmp/tmpwDR_KX/p/stats_client -c 700000000 -s 300000000 -p 19 -k 1663
+running client with: /tmp/tmpwDR_KX/p/stats_client -p 1 -k 1663 -s 700000000 -c 300000000
+running client with: /tmp/tmpwDR_KX/p/stats_client -c 600000000 -s 400000000 -k 1663 -p 1
+running client with: /tmp/tmpwDR_KX/p/stats_client -k 1663 -c 300000000 -s 700000000 -p 1
+running client with: /tmp/tmpwDR_KX/p/stats_client -p 1 -k 1663 -s 700000000 -c 300000000
+running client with: /tmp/tmpwDR_KX/p/stats_client -k 1663 -p 1 -s 300000000 -c 700000000
+running client with: /tmp/tmpwDR_KX/p/stats_client -c 800000000 -s 200000000 -k 1663 -p 1
+running client with: /tmp/tmpwDR_KX/p/stats_client -s 600000000 -p 1 -k 1663 -c 400000000
+running client with: /tmp/tmpwDR_KX/p/stats_client -k 1663 -s 400000000 -p 1 -c 600000000
+running client with: /tmp/tmpwDR_KX/p/stats_client -s 500000000 -c 500000000 -k 1663 -p 1
+running client with: /tmp/tmpwDR_KX/p/stats_client -k 1663 -p 1
+server output:
+
+1 16834 /tmp/tmpwDR_KX/ 0 0.00 1
+1 16835 /tmp/tmpwDR_KX/ 0 0.00 1
+1 16836 /tmp/tmpwDR_KX/ 0 0.00 1
+1 16837 /tmp/tmpwDR_KX/ 0 0.00 1
+1 16838 /tmp/tmpwDR_KX/ 0 0.00 1
+1 16841 /tmp/tmpwDR_KX/ 0 0.00 1
+1 16840 /tmp/tmpwDR_KX/ 0 0.00 19
+1 16842 /tmp/tmpwDR_KX/ 0 0.00 1
+1 16839 /tmp/tmpwDR_KX/ 0 0.00 1
+1 16843 /tmp/tmpwDR_KX/ 0 0.00 1
+1 16849 /tmp/tmpwDR_KX/ 0 0.00 1
+1 16848 /tmp/tmpwDR_KX/ 0 0.00 1
+1 16847 /tmp/tmpwDR_KX/ 0 0.00 1
+1 16846 /tmp/tmpwDR_KX/ 0 0.00 1
+1 16844 /tmp/tmpwDR_KX/ 0 0.00 1
+1 16845 /tmp/tmpwDR_KX/ 0 0.00 1
+
+2 16834 /tmp/tmpwDR_KX/ 1 0.70 1
+2 16835 /tmp/tmpwDR_KX/ 0 0.00 1
+2 16836 /tmp/tmpwDR_KX/ 0 0.00 1
+2 16837 /tmp/tmpwDR_KX/ 0 0.00 1
+2 16838 /tmp/tmpwDR_KX/ 0 0.00 1
+2 16841 /tmp/tmpwDR_KX/ 1 0.30 1
+2 16840 /tmp/tmpwDR_KX/ 0 0.00 19
+2 16842 /tmp/tmpwDR_KX/ 0 0.00 1
+2 16839 /tmp/tmpwDR_KX/ 0 0.00 1
+2 16843 /tmp/tmpwDR_KX/ 0 0.00 1
+2 16849 /tmp/tmpwDR_KX/ 0 0.00 1
+2 16848 /tmp/tmpwDR_KX/ 0 0.00 1
+2 16847 /tmp/tmpwDR_KX/ 0 0.00 1
+2 16846 /tmp/tmpwDR_KX/ 0 0.00 1
+2 16844 /tmp/tmpwDR_KX/ 0 0.00 1
+2 16845 /tmp/tmpwDR_KX/ 0 0.00 1
+
+3 16834 /tmp/tmpwDR_KX/ 1 0.70 1
+3 16835 /tmp/tmpwDR_KX/ 1 0.40 1
+3 16836 /tmp/tmpwDR_KX/ 1 0.40 1
+3 16837 /tmp/tmpwDR_KX/ 1 0.50 1
+3 16838 /tmp/tmpwDR_KX/ 1 0.80 1
+3 16841 /tmp/tmpwDR_KX/ 1 0.30 1
+3 16840 /tmp/tmpwDR_KX/ 0 0.00 19
+3 16842 /tmp/tmpwDR_KX/ 1 0.60 1
+3 16839 /tmp/tmpwDR_KX/ 1 0.60 1
+3 16843 /tmp/tmpwDR_KX/ 1 0.30 1
+3 16849 /tmp/tmpwDR_KX/ 1 0.50 1
+3 16848 /tmp/tmpwDR_KX/ 1 0.60 1
+3 16847 /tmp/tmpwDR_KX/ 1 0.40 1
+3 16846 /tmp/tmpwDR_KX/ 1 0.80 1
+3 16844 /tmp/tmpwDR_KX/ 1 0.30 1
+3 16845 /tmp/tmpwDR_KX/ 1 0.70 1
+
+4 16834 /tmp/tmpwDR_KX/ 1 0.70 1
+4 16835 /tmp/tmpwDR_KX/ 1 0.40 1
+4 16836 /tmp/tmpwDR_KX/ 2 0.80 1
+4 16837 /tmp/tmpwDR_KX/ 1 0.50 1
+4 16838 /tmp/tmpwDR_KX/ 1 0.80 1
+4 16841 /tmp/tmpwDR_KX/ 2 0.60 1
+4 16840 /tmp/tmpwDR_KX/ 0 0.00 19
+4 16842 /tmp/tmpwDR_KX/ 1 0.60 1
+4 16839 /tmp/tmpwDR_KX/ 1 0.60 1
+4 16843 /tmp/tmpwDR_KX/ 2 0.60 1
+4 16849 /tmp/tmpwDR_KX/ 1 0.50 1
+4 16848 /tmp/tmpwDR_KX/ 1 0.60 1
+4 16847 /tmp/tmpwDR_KX/ 1 0.40 1
+4 16846 /tmp/tmpwDR_KX/ 1 0.80 1
+4 16844 /tmp/tmpwDR_KX/ 2 0.60 1
+4 16845 /tmp/tmpwDR_KX/ 1 0.70 1
+
+5 16834 /tmp/tmpwDR_KX/ 2 1.40 1
+5 16835 /tmp/tmpwDR_KX/ 2 0.80 1
+5 16836 /tmp/tmpwDR_KX/ 2 0.80 1
+5 16837 /tmp/tmpwDR_KX/ 2 1.00 1
+5 16838 /tmp/tmpwDR_KX/ 2 1.60 1
+5 16841 /tmp/tmpwDR_KX/ 3 0.90 1
+5 16840 /tmp/tmpwDR_KX/ 0 0.00 19
+5 16842 /tmp/tmpwDR_KX/ 2 1.20 1
+5 16839 /tmp/tmpwDR_KX/ 2 1.20 1
+5 16843 /tmp/tmpwDR_KX/ 3 0.90 1
+5 16849 /tmp/tmpwDR_KX/ 2 1.00 1
+5 16848 /tmp/tmpwDR_KX/ 2 1.20 1
+5 16847 /tmp/tmpwDR_KX/ 2 0.80 1
+5 16846 /tmp/tmpwDR_KX/ 1 0.80 1
+5 16844 /tmp/tmpwDR_KX/ 2 0.60 1
+5 16845 /tmp/tmpwDR_KX/ 2 1.40 1
+
+6 16834 /tmp/tmpwDR_KX/ 2 1.40 1
+6 16835 /tmp/tmpwDR_KX/ 3 1.20 1
+6 16836 /tmp/tmpwDR_KX/ 3 1.20 1
+6 16837 /tmp/tmpwDR_KX/ 2 1.00 1
+6 16838 /tmp/tmpwDR_KX/ 2 1.60 1
+6 16841 /tmp/tmpwDR_KX/ 3 0.90 1
+6 16840 /tmp/tmpwDR_KX/ 0 0.00 19
+6 16842 /tmp/tmpwDR_KX/ 2 1.20 1
+6 16839 /tmp/tmpwDR_KX/ 2 1.20 1
+6 16843 /tmp/tmpwDR_KX/ 3 0.90 1
+6 16849 /tmp/tmpwDR_KX/ 2 1.00 1
+6 16848 /tmp/tmpwDR_KX/ 2 1.20 1
+6 16847 /tmp/tmpwDR_KX/ 3 1.20 1
+6 16846 /tmp/tmpwDR_KX/ 2 1.60 1
+6 16844 /tmp/tmpwDR_KX/ 3 0.90 1
+6 16845 /tmp/tmpwDR_KX/ 2 1.40 1
+
+7 16834 /tmp/tmpwDR_KX/ 3 2.10 1
+7 16835 /tmp/tmpwDR_KX/ 3 1.20 1
+7 16836 /tmp/tmpwDR_KX/ 3 1.20 1
+7 16837 /tmp/tmpwDR_KX/ 3 1.50 1
+7 16838 /tmp/tmpwDR_KX/ 2 1.60 1
+7 16841 /tmp/tmpwDR_KX/ 4 1.20 1
+7 16840 /tmp/tmpwDR_KX/ 0 0.00 19
+7 16842 /tmp/tmpwDR_KX/ 3 1.80 1
+7 16839 /tmp/tmpwDR_KX/ 3 1.80 1
+7 16843 /tmp/tmpwDR_KX/ 4 1.20 1
+7 16849 /tmp/tmpwDR_KX/ 3 1.50 1
+7 16848 /tmp/tmpwDR_KX/ 3 1.80 1
+7 16847 /tmp/tmpwDR_KX/ 3 1.20 1
+7 16846 /tmp/tmpwDR_KX/ 2 1.60 1
+7 16844 /tmp/tmpwDR_KX/ 4 1.20 1
+7 16845 /tmp/tmpwDR_KX/ 3 2.10 1
+
+8 16834 /tmp/tmpwDR_KX/ 3 2.10 1
+8 16835 /tmp/tmpwDR_KX/ 4 1.60 1
+8 16836 /tmp/tmpwDR_KX/ 4 1.60 1
+8 16837 /tmp/tmpwDR_KX/ 3 1.50 1
+8 16838 /tmp/tmpwDR_KX/ 3 2.40 1
+8 16841 /tmp/tmpwDR_KX/ 4 1.20 1
+8 16840 /tmp/tmpwDR_KX/ 0 0.00 19
+8 16842 /tmp/tmpwDR_KX/ 3 1.80 1
+8 16839 /tmp/tmpwDR_KX/ 3 1.80 1
+8 16843 /tmp/tmpwDR_KX/ 4 1.20 1
+8 16849 /tmp/tmpwDR_KX/ 3 1.50 1
+8 16848 /tmp/tmpwDR_KX/ 3 1.80 1
+8 16847 /tmp/tmpwDR_KX/ 4 1.60 1
+8 16846 /tmp/tmpwDR_KX/ 3 2.40 1
+8 16844 /tmp/tmpwDR_KX/ 4 1.20 1
+8 16845 /tmp/tmpwDR_KX/ 3 2.10 1
+
+9 16834 /tmp/tmpwDR_KX/ 4 2.80 1
+9 16835 /tmp/tmpwDR_KX/ 5 2.00 1
+9 16836 /tmp/tmpwDR_KX/ 5 2.00 1
+9 16837 /tmp/tmpwDR_KX/ 4 2.00 1
+9 16838 /tmp/tmpwDR_KX/ 3 2.40 1
+9 16841 /tmp/tmpwDR_KX/ 5 1.50 1
+9 16840 /tmp/tmpwDR_KX/ 0 0.00 19
+9 16842 /tmp/tmpwDR_KX/ 4 2.40 1
+9 16839 /tmp/tmpwDR_KX/ 4 2.40 1
+9 16843 /tmp/tmpwDR_KX/ 5 1.50 1
+9 16849 /tmp/tmpwDR_KX/ 4 2.00 1
+9 16848 /tmp/tmpwDR_KX/ 4 2.40 1
+9 16847 /tmp/tmpwDR_KX/ 5 2.00 1
+9 16846 /tmp/tmpwDR_KX/ 3 2.40 1
+9 16844 /tmp/tmpwDR_KX/ 5 1.50 1
+9 16845 /tmp/tmpwDR_KX/ 4 2.80 1
+
+10 16834 /tmp/tmpwDR_KX/ 4 2.80 1
+10 16835 /tmp/tmpwDR_KX/ 5 2.00 1
+10 16836 /tmp/tmpwDR_KX/ 5 2.00 1
+10 16837 /tmp/tmpwDR_KX/ 4 2.00 1
+10 16838 /tmp/tmpwDR_KX/ 4 3.20 1
+10 16841 /tmp/tmpwDR_KX/ 6 1.80 1
+10 16840 /tmp/tmpwDR_KX/ 0 0.00 19
+10 16842 /tmp/tmpwDR_KX/ 4 2.40 1
+10 16839 /tmp/tmpwDR_KX/ 4 2.40 1
+10 16843 /tmp/tmpwDR_KX/ 6 1.80 1
+10 16849 /tmp/tmpwDR_KX/ 4 2.00 1
+10 16848 /tmp/tmpwDR_KX/ 4 2.40 1
+10 16847 /tmp/tmpwDR_KX/ 5 2.00 1
+10 16846 /tmp/tmpwDR_KX/ 3 2.40 1
+10 16844 /tmp/tmpwDR_KX/ 6 1.80 1
+10 16845 /tmp/tmpwDR_KX/ 4 2.80 1
+
+11 16834 /tmp/tmpwDR_KX/ 5 3.50 1
+11 16835 /tmp/tmpwDR_KX/ 6 2.40 1
+11 16836 /tmp/tmpwDR_KX/ 6 2.40 1
+11 16837 /tmp/tmpwDR_KX/ 5 2.50 1
+11 16838 /tmp/tmpwDR_KX/ 4 3.20 1
+11 16841 /tmp/tmpwDR_KX/ 7 2.10 1
+11 16840 /tmp/tmpwDR_KX/ 0 0.00 19
+11 16842 /tmp/tmpwDR_KX/ 5 3.00 1
+11 16839 /tmp/tmpwDR_KX/ 5 3.00 1
+11 16843 /tmp/tmpwDR_KX/ 6 1.80 1
+11 16849 /tmp/tmpwDR_KX/ 5 2.50 1
+11 16848 /tmp/tmpwDR_KX/ 5 3.00 1
+11 16847 /tmp/tmpwDR_KX/ 6 2.40 1
+11 16846 /tmp/tmpwDR_KX/ 4 3.20 1
+11 16844 /tmp/tmpwDR_KX/ 6 1.80 1
+11 16845 /tmp/tmpwDR_KX/ 4 2.80 1
+
+12 16834 /tmp/tmpwDR_KX/ 5 3.50 1
+12 16835 /tmp/tmpwDR_KX/ 6 2.40 1
+12 16836 /tmp/tmpwDR_KX/ 6 2.40 1
+12 16837 /tmp/tmpwDR_KX/ 5 2.50 1
+12 16838 /tmp/tmpwDR_KX/ 4 3.20 1
+12 16841 /tmp/tmpwDR_KX/ 7 2.10 1
+12 16840 /tmp/tmpwDR_KX/ 0 0.00 19
+12 16842 /tmp/tmpwDR_KX/ 5 3.00 1
+12 16839 /tmp/tmpwDR_KX/ 5 3.00 1
+12 16843 /tmp/tmpwDR_KX/ 7 2.10 1
+12 16849 /tmp/tmpwDR_KX/ 5 2.50 1
+12 16848 /tmp/tmpwDR_KX/ 5 3.00 1
+12 16847 /tmp/tmpwDR_KX/ 6 2.40 1
+12 16846 /tmp/tmpwDR_KX/ 4 3.20 1
+12 16844 /tmp/tmpwDR_KX/ 7 2.10 1
+12 16845 /tmp/tmpwDR_KX/ 5 3.50 1
+
+13 16834 /tmp/tmpwDR_KX/ 5 3.50 1
+13 16835 /tmp/tmpwDR_KX/ 7 2.80 1
+13 16836 /tmp/tmpwDR_KX/ 7 2.80 1
+13 16837 /tmp/tmpwDR_KX/ 6 3.00 1
+13 16838 /tmp/tmpwDR_KX/ 5 4.00 1
+13 16841 /tmp/tmpwDR_KX/ 8 2.40 1
+13 16840 /tmp/tmpwDR_KX/ 0 0.00 19
+13 16842 /tmp/tmpwDR_KX/ 6 3.60 1
+13 16839 /tmp/tmpwDR_KX/ 5 3.00 1
+13 16843 /tmp/tmpwDR_KX/ 7 2.10 1
+13 16849 /tmp/tmpwDR_KX/ 6 3.00 1
+13 16848 /tmp/tmpwDR_KX/ 6 3.60 1
+13 16847 /tmp/tmpwDR_KX/ 7 2.80 1
+13 16846 /tmp/tmpwDR_KX/ 5 4.00 1
+13 16844 /tmp/tmpwDR_KX/ 7 2.10 1
+13 16845 /tmp/tmpwDR_KX/ 5 3.50 1
+
+14 16834 /tmp/tmpwDR_KX/ 6 4.20 1
+14 16835 /tmp/tmpwDR_KX/ 7 2.80 1
+14 16836 /tmp/tmpwDR_KX/ 7 2.80 1
+14 16837 /tmp/tmpwDR_KX/ 6 3.00 1
+14 16838 /tmp/tmpwDR_KX/ 5 4.00 1
+14 16841 /tmp/tmpwDR_KX/ 8 2.40 1
+14 16840 /tmp/tmpwDR_KX/ 0 0.00 19
+14 16842 /tmp/tmpwDR_KX/ 6 3.60 1
+14 16839 /tmp/tmpwDR_KX/ 6 3.60 1
+14 16843 /tmp/tmpwDR_KX/ 8 2.40 1
+14 16849 /tmp/tmpwDR_KX/ 6 3.00 1
+14 16848 /tmp/tmpwDR_KX/ 6 3.60 1
+14 16847 /tmp/tmpwDR_KX/ 7 2.80 1
+14 16846 /tmp/tmpwDR_KX/ 5 4.00 1
+14 16844 /tmp/tmpwDR_KX/ 8 2.40 1
+14 16845 /tmp/tmpwDR_KX/ 6 4.20 1
+
+15 16834 /tmp/tmpwDR_KX/ 6 4.20 1
+15 16835 /tmp/tmpwDR_KX/ 8 3.20 1
+15 16836 /tmp/tmpwDR_KX/ 8 3.20 1
+15 16837 /tmp/tmpwDR_KX/ 7 3.50 1
+15 16838 /tmp/tmpwDR_KX/ 6 4.80 1
+15 16841 /tmp/tmpwDR_KX/ 9 2.70 1
+15 16840 /tmp/tmpwDR_KX/ 0 0.00 19
+15 16842 /tmp/tmpwDR_KX/ 6 3.60 1
+15 16839 /tmp/tmpwDR_KX/ 6 3.60 1
+15 16843 /tmp/tmpwDR_KX/ 9 2.70 1
+15 16849 /tmp/tmpwDR_KX/ 7 3.50 1
+15 16848 /tmp/tmpwDR_KX/ 6 3.60 1
+15 16847 /tmp/tmpwDR_KX/ 8 3.20 1
+15 16846 /tmp/tmpwDR_KX/ 5 4.00 1
+15 16844 /tmp/tmpwDR_KX/ 9 2.70 1
+15 16845 /tmp/tmpwDR_KX/ 6 4.20 1
+
+16 16834 /tmp/tmpwDR_KX/ 7 4.90 1
+16 16835 /tmp/tmpwDR_KX/ 8 3.20 1
+16 16836 /tmp/tmpwDR_KX/ 9 3.60 1
+16 16837 /tmp/tmpwDR_KX/ 7 3.50 1
+16 16838 /tmp/tmpwDR_KX/ 6 4.80 1
+16 16841 /tmp/tmpwDR_KX/ 9 2.70 1
+16 16840 /tmp/tmpwDR_KX/ 0 0.00 19
+16 16842 /tmp/tmpwDR_KX/ 7 4.20 1
+16 16839 /tmp/tmpwDR_KX/ 7 4.20 1
+16 16843 /tmp/tmpwDR_KX/ 9 2.70 1
+16 16849 /tmp/tmpwDR_KX/ 7 3.50 1
+16 16848 /tmp/tmpwDR_KX/ 7 4.20 1
+16 16847 /tmp/tmpwDR_KX/ 8 3.20 1
+16 16846 /tmp/tmpwDR_KX/ 6 4.80 1
+16 16844 /tmp/tmpwDR_KX/ 9 2.70 1
+16 16845 /tmp/tmpwDR_KX/ 7 4.90 1
+
+17 16834 /tmp/tmpwDR_KX/ 7 4.90 1
+17 16835 /tmp/tmpwDR_KX/ 9 3.60 1
+17 16836 /tmp/tmpwDR_KX/ 9 3.60 1
+17 16837 /tmp/tmpwDR_KX/ 8 4.00 1
+17 16838 /tmp/tmpwDR_KX/ 7 5.60 1
+17 16841 /tmp/tmpwDR_KX/ 10 3.00 1
+17 16840 /tmp/tmpwDR_KX/ 0 0.00 19
+17 16842 /tmp/tmpwDR_KX/ 7 4.20 1
+17 16839 /tmp/tmpwDR_KX/ 7 4.20 1
+17 16843 /tmp/tmpwDR_KX/ 10 3.00 1
+17 16849 /tmp/tmpwDR_KX/ 8 4.00 1
+17 16848 /tmp/tmpwDR_KX/ 7 4.20 1
+17 16847 /tmp/tmpwDR_KX/ 9 3.60 1
+17 16846 /tmp/tmpwDR_KX/ 6 4.80 1
+17 16844 /tmp/tmpwDR_KX/ 10 3.00 1
+17 16845 /tmp/tmpwDR_KX/ 7 4.90 1
+
+18 16834 /tmp/tmpwDR_KX/ 7 4.90 1
+18 16835 /tmp/tmpwDR_KX/ 9 3.60 1
+18 16836 /tmp/tmpwDR_KX/ 10 4.00 1
+18 16837 /tmp/tmpwDR_KX/ 8 4.00 1
+18 16838 /tmp/tmpwDR_KX/ 7 5.60 1
+18 16841 /tmp/tmpwDR_KX/ 11 3.30 1
+18 16840 /tmp/tmpwDR_KX/ 0 0.00 19
+18 16842 /tmp/tmpwDR_KX/ 8 4.80 1
+18 16839 /tmp/tmpwDR_KX/ 8 4.80 1
+18 16843 /tmp/tmpwDR_KX/ 10 3.00 1
+18 16849 /tmp/tmpwDR_KX/ 8 4.00 1
+18 16848 /tmp/tmpwDR_KX/ 8 4.80 1
+18 16847 /tmp/tmpwDR_KX/ 9 3.60 1
+18 16846 /tmp/tmpwDR_KX/ 7 5.60 1
+18 16844 /tmp/tmpwDR_KX/ 11 3.30 1
+18 16845 /tmp/tmpwDR_KX/ 7 4.90 1
+
+19 16834 /tmp/tmpwDR_KX/ 8 5.60 1
+19 16835 /tmp/tmpwDR_KX/ 10 4.00 1
+19 16836 /tmp/tmpwDR_KX/ 10 4.00 1
+19 16837 /tmp/tmpwDR_KX/ 9 4.50 1
+19 16838 /tmp/tmpwDR_KX/ 7 5.60 1
+19 16841 /tmp/tmpwDR_KX/ 11 3.30 1
+19 16840 /tmp/tmpwDR_KX/ 0 0.00 19
+19 16842 /tmp/tmpwDR_KX/ 8 4.80 1
+19 16839 /tmp/tmpwDR_KX/ 8 4.80 1
+19 16843 /tmp/tmpwDR_KX/ 11 3.30 1
+19 16849 /tmp/tmpwDR_KX/ 9 4.50 1
+19 16848 /tmp/tmpwDR_KX/ 8 4.80 1
+19 16847 /tmp/tmpwDR_KX/ 10 4.00 1
+19 16846 /tmp/tmpwDR_KX/ 7 5.60 1
+19 16844 /tmp/tmpwDR_KX/ 11 3.30 1
+19 16845 /tmp/tmpwDR_KX/ 8 5.60 1
+
+20 16834 /tmp/tmpwDR_KX/ 8 5.60 1
+20 16835 /tmp/tmpwDR_KX/ 10 4.00 1
+20 16836 /tmp/tmpwDR_KX/ 11 4.40 1
+20 16837 /tmp/tmpwDR_KX/ 9 4.50 1
+20 16838 /tmp/tmpwDR_KX/ 8 6.40 1
+20 16841 /tmp/tmpwDR_KX/ 12 3.60 1
+20 16840 /tmp/tmpwDR_KX/ 0 0.00 19
+20 16842 /tmp/tmpwDR_KX/ 9 5.40 1
+20 16839 /tmp/tmpwDR_KX/ 9 5.40 1
+20 16843 /tmp/tmpwDR_KX/ 12 3.60 1
+20 16849 /tmp/tmpwDR_KX/ 9 4.50 1
+20 16848 /tmp/tmpwDR_KX/ 9 5.40 1
+20 16847 /tmp/tmpwDR_KX/ 10 4.00 1
+20 16846 /tmp/tmpwDR_KX/ 7 5.60 1
+20 16844 /tmp/tmpwDR_KX/ 12 3.60 1
+20 16845 /tmp/tmpwDR_KX/ 8 5.60 1
+
+21 16834 /tmp/tmpwDR_KX/ 9 6.30 1
+21 16835 /tmp/tmpwDR_KX/ 11 4.40 1
+21 16836 /tmp/tmpwDR_KX/ 11 4.40 1
+21 16837 /tmp/tmpwDR_KX/ 10 5.00 1
+21 16838 /tmp/tmpwDR_KX/ 8 6.40 1
+21 16841 /tmp/tmpwDR_KX/ 13 3.90 1
+21 16840 /tmp/tmpwDR_KX/ 0 0.00 19
+21 16842 /tmp/tmpwDR_KX/ 9 5.40 1
+21 16839 /tmp/tmpwDR_KX/ 9 5.40 1
+21 16843 /tmp/tmpwDR_KX/ 12 3.60 1
+21 16849 /tmp/tmpwDR_KX/ 10 5.00 1
+21 16848 /tmp/tmpwDR_KX/ 9 5.40 1
+21 16847 /tmp/tmpwDR_KX/ 11 4.40 1
+21 16846 /tmp/tmpwDR_KX/ 8 6.40 1
+21 16844 /tmp/tmpwDR_KX/ 13 3.90 1
+21 16845 /tmp/tmpwDR_KX/ 9 6.30 1
+
+22 16834 /tmp/tmpwDR_KX/ 9 6.30 1
+22 16835 /tmp/tmpwDR_KX/ 11 4.40 1
+22 16836 /tmp/tmpwDR_KX/ 12 4.80 1
+22 16837 /tmp/tmpwDR_KX/ 10 5.00 1
+22 16838 /tmp/tmpwDR_KX/ 9 7.20 1
+22 16841 /tmp/tmpwDR_KX/ 13 3.90 1
+22 16840 /tmp/tmpwDR_KX/ 0 0.00 19
+22 16842 /tmp/tmpwDR_KX/ 10 6.00 1
+22 16839 /tmp/tmpwDR_KX/ 10 6.00 1
+22 16843 /tmp/tmpwDR_KX/ 13 3.90 1
+22 16849 /tmp/tmpwDR_KX/ 10 5.00 1
+22 16848 /tmp/tmpwDR_KX/ 9 5.40 1
+22 16847 /tmp/tmpwDR_KX/ 11 4.40 1
+22 16846 /tmp/tmpwDR_KX/ 8 6.40 1
+22 16844 /tmp/tmpwDR_KX/ 13 3.90 1
+22 16845 /tmp/tmpwDR_KX/ 9 6.30 1
+
+23 16834 /tmp/tmpwDR_KX/ 10 7.00 1
+23 16835 /tmp/tmpwDR_KX/ 12 4.80 1
+23 16836 /tmp/tmpwDR_KX/ 12 4.80 1
+23 16837 /tmp/tmpwDR_KX/ 11 5.50 1
+23 16838 /tmp/tmpwDR_KX/ 9 7.20 1
+23 16841 /tmp/tmpwDR_KX/ 14 4.20 1
+23 16840 /tmp/tmpwDR_KX/ 0 0.00 19
+23 16842 /tmp/tmpwDR_KX/ 10 6.00 1
+23 16839 /tmp/tmpwDR_KX/ 10 6.00 1
+23 16843 /tmp/tmpwDR_KX/ 14 4.20 1
+23 16849 /tmp/tmpwDR_KX/ 11 5.50 1
+23 16848 /tmp/tmpwDR_KX/ 10 6.00 1
+23 16847 /tmp/tmpwDR_KX/ 12 4.80 1
+23 16846 /tmp/tmpwDR_KX/ 9 7.20 1
+23 16844 /tmp/tmpwDR_KX/ 14 4.20 1
+23 16845 /tmp/tmpwDR_KX/ 10 7.00 1
+
+24 16834 /tmp/tmpwDR_KX/ 10 7.00 1
+24 16835 /tmp/tmpwDR_KX/ 13 5.20 1
+24 16836 /tmp/tmpwDR_KX/ 13 5.20 1
+24 16837 /tmp/tmpwDR_KX/ 11 5.50 1
+24 16838 /tmp/tmpwDR_KX/ 10 8.00 1
+24 16841 /tmp/tmpwDR_KX/ 14 4.20 1
+24 16840 /tmp/tmpwDR_KX/ 0 0.00 19
+24 16842 /tmp/tmpwDR_KX/ 11 6.60 1
+24 16839 /tmp/tmpwDR_KX/ 11 6.60 1
+24 16843 /tmp/tmpwDR_KX/ 14 4.20 1
+24 16849 /tmp/tmpwDR_KX/ 12 6.00 1
+24 16848 /tmp/tmpwDR_KX/ 10 6.00 1
+24 16847 /tmp/tmpwDR_KX/ 13 5.20 1
+24 16846 /tmp/tmpwDR_KX/ 9 7.20 1
+24 16844 /tmp/tmpwDR_KX/ 14 4.20 1
+24 16845 /tmp/tmpwDR_KX/ 10 7.00 1
+
+25 16834 /tmp/tmpwDR_KX/ 11 7.70 1
+25 16835 /tmp/tmpwDR_KX/ 13 5.20 1
+25 16836 /tmp/tmpwDR_KX/ 14 5.60 1
+25 16837 /tmp/tmpwDR_KX/ 12 6.00 1
+25 16838 /tmp/tmpwDR_KX/ 10 8.00 1
+25 16841 /tmp/tmpwDR_KX/ 15 4.50 1
+25 16840 /tmp/tmpwDR_KX/ 0 0.00 19
+25 16842 /tmp/tmpwDR_KX/ 11 6.60 1
+25 16839 /tmp/tmpwDR_KX/ 11 6.60 1
+25 16843 /tmp/tmpwDR_KX/ 15 4.50 1
+25 16849 /tmp/tmpwDR_KX/ 12 6.00 1
+25 16848 /tmp/tmpwDR_KX/ 11 6.60 1
+25 16847 /tmp/tmpwDR_KX/ 13 5.20 1
+25 16846 /tmp/tmpwDR_KX/ 9 7.20 1
+25 16844 /tmp/tmpwDR_KX/ 15 4.50 1
+25 16845 /tmp/tmpwDR_KX/ 11 7.70 1
+
+26 16834 /tmp/tmpwDR_KX/ 11 7.70 1
+26 16835 /tmp/tmpwDR_KX/ 14 5.60 1
+26 16836 /tmp/tmpwDR_KX/ 14 5.60 1
+26 16837 /tmp/tmpwDR_KX/ 12 6.00 1
+26 16838 /tmp/tmpwDR_KX/ 11 8.80 1
+26 16841 /tmp/tmpwDR_KX/ 16 4.80 1
+26 16840 /tmp/tmpwDR_KX/ 0 0.00 19
+26 16842 /tmp/tmpwDR_KX/ 12 7.20 1
+26 16839 /tmp/tmpwDR_KX/ 11 6.60 1
+26 16843 /tmp/tmpwDR_KX/ 16 4.80 1
+26 16849 /tmp/tmpwDR_KX/ 13 6.50 1
+26 16848 /tmp/tmpwDR_KX/ 11 6.60 1
+26 16847 /tmp/tmpwDR_KX/ 14 5.60 1
+26 16846 /tmp/tmpwDR_KX/ 10 8.00 1
+26 16844 /tmp/tmpwDR_KX/ 15 4.50 1
+26 16845 /tmp/tmpwDR_KX/ 11 7.70 1
+
+27 16834 /tmp/tmpwDR_KX/ 11 7.70 1
+27 16835 /tmp/tmpwDR_KX/ 14 5.60 1
+27 16836 /tmp/tmpwDR_KX/ 15 6.00 1
+27 16837 /tmp/tmpwDR_KX/ 13 6.50 1
+27 16838 /tmp/tmpwDR_KX/ 11 8.80 1
+27 16841 /tmp/tmpwDR_KX/ 16 4.80 1
+27 16840 /tmp/tmpwDR_KX/ 0 0.00 19
+27 16842 /tmp/tmpwDR_KX/ 12 7.20 1
+27 16839 /tmp/tmpwDR_KX/ 12 7.20 1
+27 16843 /tmp/tmpwDR_KX/ 16 4.80 1
+27 16849 /tmp/tmpwDR_KX/ 13 6.50 1
+27 16848 /tmp/tmpwDR_KX/ 12 7.20 1
+27 16847 /tmp/tmpwDR_KX/ 14 5.60 1
+27 16846 /tmp/tmpwDR_KX/ 10 8.00 1
+27 16844 /tmp/tmpwDR_KX/ 16 4.80 1
+27 16845 /tmp/tmpwDR_KX/ 11 7.70 1
+
+28 16834 /tmp/tmpwDR_KX/ 12 8.40 1
+28 16835 /tmp/tmpwDR_KX/ 15 6.00 1
+28 16836 /tmp/tmpwDR_KX/ 15 6.00 1
+28 16837 /tmp/tmpwDR_KX/ 13 6.50 1
+28 16838 /tmp/tmpwDR_KX/ 12 9.60 1
+28 16841 /tmp/tmpwDR_KX/ 17 5.10 1
+28 16840 /tmp/tmpwDR_KX/ 0 0.00 19
+28 16842 /tmp/tmpwDR_KX/ 13 7.80 1
+28 16839 /tmp/tmpwDR_KX/ 12 7.20 1
+28 16843 /tmp/tmpwDR_KX/ 17 5.10 1
+28 16849 /tmp/tmpwDR_KX/ 14 7.00 1
+28 16848 /tmp/tmpwDR_KX/ 12 7.20 1
+28 16847 /tmp/tmpwDR_KX/ 15 6.00 1
+28 16846 /tmp/tmpwDR_KX/ 11 8.80 1
+28 16844 /tmp/tmpwDR_KX/ 17 5.10 1
+28 16845 /tmp/tmpwDR_KX/ 12 8.40 1
+
+29 16834 /tmp/tmpwDR_KX/ 12 8.40 1
+29 16835 /tmp/tmpwDR_KX/ 16 6.40 1
+29 16836 /tmp/tmpwDR_KX/ 16 6.40 1
+29 16837 /tmp/tmpwDR_KX/ 14 7.00 1
+29 16838 /tmp/tmpwDR_KX/ 12 9.60 1
+29 16841 /tmp/tmpwDR_KX/ 18 5.40 1
+29 16840 /tmp/tmpwDR_KX/ 0 0.00 19
+29 16842 /tmp/tmpwDR_KX/ 13 7.80 1
+29 16839 /tmp/tmpwDR_KX/ 13 7.80 1
+29 16843 /tmp/tmpwDR_KX/ 17 5.10 1
+29 16849 /tmp/tmpwDR_KX/ 14 7.00 1
+29 16848 /tmp/tmpwDR_KX/ 13 7.80 1
+29 16847 /tmp/tmpwDR_KX/ 15 6.00 1
+29 16846 /tmp/tmpwDR_KX/ 11 8.80 1
+29 16844 /tmp/tmpwDR_KX/ 17 5.10 1
+29 16845 /tmp/tmpwDR_KX/ 12 8.40 1
+
+30 16834 /tmp/tmpwDR_KX/ 12 8.40 1
+30 16835 /tmp/tmpwDR_KX/ 16 6.40 1
+30 16836 /tmp/tmpwDR_KX/ 16 6.40 1
+30 16837 /tmp/tmpwDR_KX/ 14 7.00 1
+30 16838 /tmp/tmpwDR_KX/ 12 9.60 1
+30 16841 /tmp/tmpwDR_KX/ 18 5.40 1
+30 16840 /tmp/tmpwDR_KX/ 0 0.00 19
+30 16842 /tmp/tmpwDR_KX/ 13 7.80 1
+30 16839 /tmp/tmpwDR_KX/ 13 7.80 1
+30 16843 /tmp/tmpwDR_KX/ 18 5.40 1
+30 16849 /tmp/tmpwDR_KX/ 15 7.50 1
+30 16848 /tmp/tmpwDR_KX/ 13 7.80 1
+30 16847 /tmp/tmpwDR_KX/ 16 6.40 1
+30 16846 /tmp/tmpwDR_KX/ 12 9.60 1
+30 16844 /tmp/tmpwDR_KX/ 18 5.40 1
+30 16845 /tmp/tmpwDR_KX/ 13 9.10 1
+
+
+
+test manyclients PASSED (6 of 6)
+ (Check that up to 16 clients can run concurrently)
+
+starting manyclients2
+
+**********************************************************************
+
+Test manyclients2
+Check that when a client leaves, another can enter
+
+**********************************************************************
+running server with: /tmp/tmpwDR_KX/p/stats_server -k 1099
+running client with: /tmp/tmpwDR_KX/p/stats_client -p 1 -k 1099 -c 600000000 -s 400000000
+running client with: /tmp/tmpwDR_KX/p/stats_client -k 1099 -s 200000000 -c 800000000 -p 1
+running client with: /tmp/tmpwDR_KX/p/stats_client -p 1 -k 1099 -c 600000000 -s 400000000
+running client with: /tmp/tmpwDR_KX/p/stats_client -k 1099 -s 700000000 -c 300000000 -p 1
+running client with: /tmp/tmpwDR_KX/p/stats_client -s 700000000 -c 300000000 -k 1099 -p 1
+running client with: /tmp/tmpwDR_KX/p/stats_client -c 400000000 -k 1099 -p 1 -s 600000000
+running client with: /tmp/tmpwDR_KX/p/stats_client -p 1 -s 400000000 -k 1099 -c 600000000
+running client with: /tmp/tmpwDR_KX/p/stats_client -p 1 -c 300000000 -s 700000000 -k 1099
+running client with: /tmp/tmpwDR_KX/p/stats_client -s 700000000 -k 1099 -c 300000000 -p 1
+running client with: /tmp/tmpwDR_KX/p/stats_client -p 1 -s 300000000 -c 700000000 -k 1099
+running client with: /tmp/tmpwDR_KX/p/stats_client -p 1 -k 1099 -c 600000000 -s 400000000
+running client with: /tmp/tmpwDR_KX/p/stats_client -k 1099 -c 800000000 -s 200000000 -p 1
+running client with: /tmp/tmpwDR_KX/p/stats_client -s 400000000 -k 1099 -p 1 -c 600000000
+running client with: /tmp/tmpwDR_KX/p/stats_client -s 300000000 -k 1099 -c 700000000 -p 1
+running client with: /tmp/tmpwDR_KX/p/stats_client -p 1 -s 400000000 -k 1099 -c 600000000
+running client with: /tmp/tmpwDR_KX/p/stats_client -p 1 -k 1099 -s 400000000 -c 600000000
+running client with: /tmp/tmpwDR_KX/p/stats_client -p 1 -c 600000000 -s 400000000 -k 1099
+server output:
+
+1 16923 /tmp/tmpwDR_KX/ 0 0.00 1
+1 16924 /tmp/tmpwDR_KX/ 0 0.00 1
+1 16925 /tmp/tmpwDR_KX/ 0 0.00 1
+1 16926 /tmp/tmpwDR_KX/ 0 0.00 1
+1 16927 /tmp/tmpwDR_KX/ 0 0.00 1
+1 16928 /tmp/tmpwDR_KX/ 0 0.00 1
+1 16929 /tmp/tmpwDR_KX/ 0 0.00 1
+1 16935 /tmp/tmpwDR_KX/ 0 0.00 1
+1 16933 /tmp/tmpwDR_KX/ 0 0.00 1
+1 16936 /tmp/tmpwDR_KX/ 0 0.00 1
+1 16932 /tmp/tmpwDR_KX/ 0 0.00 1
+1 16937 /tmp/tmpwDR_KX/ 0 0.00 1
+1 16934 /tmp/tmpwDR_KX/ 0 0.00 1
+1 16931 /tmp/tmpwDR_KX/ 0 0.00 1
+1 16930 /tmp/tmpwDR_KX/ 0 0.00 1
+1 16938 /tmp/tmpwDR_KX/ 0 0.00 1
+
+2 16923 /tmp/tmpwDR_KX/ 0 0.00 1
+2 16924 /tmp/tmpwDR_KX/ 0 0.00 1
+2 16925 /tmp/tmpwDR_KX/ 0 0.00 1
+2 16926 /tmp/tmpwDR_KX/ 0 0.00 1
+2 16927 /tmp/tmpwDR_KX/ 0 0.00 1
+2 16928 /tmp/tmpwDR_KX/ 0 0.00 1
+2 16929 /tmp/tmpwDR_KX/ 0 0.00 1
+2 16935 /tmp/tmpwDR_KX/ 0 0.00 1
+2 16933 /tmp/tmpwDR_KX/ 0 0.00 1
+2 16936 /tmp/tmpwDR_KX/ 0 0.00 1
+2 16932 /tmp/tmpwDR_KX/ 0 0.00 1
+2 16937 /tmp/tmpwDR_KX/ 0 0.00 1
+2 16934 /tmp/tmpwDR_KX/ 0 0.00 1
+2 16931 /tmp/tmpwDR_KX/ 0 0.00 1
+2 16930 /tmp/tmpwDR_KX/ 0 0.00 1
+2 16938 /tmp/tmpwDR_KX/ 0 0.00 1
+
+3 16923 /tmp/tmpwDR_KX/ 0 0.00 1
+3 16924 /tmp/tmpwDR_KX/ 0 0.00 1
+3 16925 /tmp/tmpwDR_KX/ 0 0.00 1
+3 16926 /tmp/tmpwDR_KX/ 1 0.30 1
+3 16927 /tmp/tmpwDR_KX/ 1 0.30 1
+3 16928 /tmp/tmpwDR_KX/ 1 0.40 1
+3 16929 /tmp/tmpwDR_KX/ 0 0.00 1
+3 16935 /tmp/tmpwDR_KX/ 1 0.60 1
+3 16933 /tmp/tmpwDR_KX/ 0 0.00 1
+3 16936 /tmp/tmpwDR_KX/ 0 0.00 1
+3 16932 /tmp/tmpwDR_KX/ 0 0.00 1
+3 16937 /tmp/tmpwDR_KX/ 1 0.60 1
+3 16934 /tmp/tmpwDR_KX/ 0 0.00 1
+3 16931 /tmp/tmpwDR_KX/ 1 0.30 1
+3 16930 /tmp/tmpwDR_KX/ 1 0.30 1
+3 16938 /tmp/tmpwDR_KX/ 1 0.60 1
+
+4 16923 /tmp/tmpwDR_KX/ 1 0.60 1
+4 16924 /tmp/tmpwDR_KX/ 1 0.80 1
+4 16925 /tmp/tmpwDR_KX/ 1 0.60 1
+4 16926 /tmp/tmpwDR_KX/ 1 0.30 1
+4 16927 /tmp/tmpwDR_KX/ 1 0.30 1
+4 16928 /tmp/tmpwDR_KX/ 1 0.40 1
+4 16929 /tmp/tmpwDR_KX/ 1 0.60 1
+4 16935 /tmp/tmpwDR_KX/ 1 0.60 1
+4 16933 /tmp/tmpwDR_KX/ 1 0.60 1
+4 16936 /tmp/tmpwDR_KX/ 1 0.70 1
+4 16932 /tmp/tmpwDR_KX/ 1 0.70 1
+4 16937 /tmp/tmpwDR_KX/ 1 0.60 1
+4 16934 /tmp/tmpwDR_KX/ 1 0.80 1
+4 16931 /tmp/tmpwDR_KX/ 1 0.30 1
+4 16930 /tmp/tmpwDR_KX/ 2 0.60 1
+4 16938 /tmp/tmpwDR_KX/ 1 0.60 1
+
+5 16923 /tmp/tmpwDR_KX/ 1 0.60 1
+5 16924 /tmp/tmpwDR_KX/ 1 0.80 1
+5 16925 /tmp/tmpwDR_KX/ 1 0.60 1
+5 16926 /tmp/tmpwDR_KX/ 2 0.60 1
+5 16927 /tmp/tmpwDR_KX/ 2 0.60 1
+5 16928 /tmp/tmpwDR_KX/ 1 0.40 1
+5 16929 /tmp/tmpwDR_KX/ 2 1.20 1
+5 16935 /tmp/tmpwDR_KX/ 2 1.20 1
+5 16933 /tmp/tmpwDR_KX/ 1 0.60 1
+5 16936 /tmp/tmpwDR_KX/ 1 0.70 1
+5 16932 /tmp/tmpwDR_KX/ 1 0.70 1
+5 16937 /tmp/tmpwDR_KX/ 1 0.60 1
+5 16934 /tmp/tmpwDR_KX/ 1 0.80 1
+5 16931 /tmp/tmpwDR_KX/ 2 0.60 1
+5 16930 /tmp/tmpwDR_KX/ 2 0.60 1
+5 16938 /tmp/tmpwDR_KX/ 1 0.60 1
+
+6 16923 /tmp/tmpwDR_KX/ 1 0.60 1
+6 16924 /tmp/tmpwDR_KX/ 1 0.80 1
+6 16925 /tmp/tmpwDR_KX/ 1 0.60 1
+6 16926 /tmp/tmpwDR_KX/ 2 0.60 1
+6 16927 /tmp/tmpwDR_KX/ 2 0.60 1
+6 16928 /tmp/tmpwDR_KX/ 2 0.80 1
+6 16929 /tmp/tmpwDR_KX/ 2 1.20 1
+6 16935 /tmp/tmpwDR_KX/ 2 1.20 1
+6 16933 /tmp/tmpwDR_KX/ 2 1.20 1
+6 16936 /tmp/tmpwDR_KX/ 1 0.70 1
+6 16932 /tmp/tmpwDR_KX/ 1 0.70 1
+6 16937 /tmp/tmpwDR_KX/ 2 1.20 1
+6 16934 /tmp/tmpwDR_KX/ 1 0.80 1
+6 16931 /tmp/tmpwDR_KX/ 3 0.90 1
+6 16930 /tmp/tmpwDR_KX/ 3 0.90 1
+6 16938 /tmp/tmpwDR_KX/ 2 1.20 1
+
+7 16923 /tmp/tmpwDR_KX/ 2 1.20 1
+7 16924 /tmp/tmpwDR_KX/ 1 0.80 1
+7 16925 /tmp/tmpwDR_KX/ 2 1.20 1
+7 16926 /tmp/tmpwDR_KX/ 3 0.90 1
+7 16927 /tmp/tmpwDR_KX/ 3 0.90 1
+7 16928 /tmp/tmpwDR_KX/ 2 0.80 1
+7 16929 /tmp/tmpwDR_KX/ 2 1.20 1
+7 16935 /tmp/tmpwDR_KX/ 2 1.20 1
+7 16933 /tmp/tmpwDR_KX/ 2 1.20 1
+7 16936 /tmp/tmpwDR_KX/ 2 1.40 1
+7 16932 /tmp/tmpwDR_KX/ 2 1.40 1
+7 16937 /tmp/tmpwDR_KX/ 2 1.20 1
+7 16934 /tmp/tmpwDR_KX/ 2 1.60 1
+7 16931 /tmp/tmpwDR_KX/ 3 0.90 1
+7 16930 /tmp/tmpwDR_KX/ 4 1.20 1
+7 16938 /tmp/tmpwDR_KX/ 2 1.20 1
+
+8 16923 /tmp/tmpwDR_KX/ 2 1.20 1
+8 16924 /tmp/tmpwDR_KX/ 2 1.60 1
+8 16925 /tmp/tmpwDR_KX/ 2 1.20 1
+8 16926 /tmp/tmpwDR_KX/ 4 1.20 1
+8 16927 /tmp/tmpwDR_KX/ 3 0.90 1
+8 16928 /tmp/tmpwDR_KX/ 3 1.20 1
+8 16929 /tmp/tmpwDR_KX/ 3 1.80 1
+8 16935 /tmp/tmpwDR_KX/ 3 1.80 1
+8 16933 /tmp/tmpwDR_KX/ 2 1.20 1
+8 16936 /tmp/tmpwDR_KX/ 2 1.40 1
+8 16932 /tmp/tmpwDR_KX/ 2 1.40 1
+8 16937 /tmp/tmpwDR_KX/ 2 1.20 1
+8 16934 /tmp/tmpwDR_KX/ 2 1.60 1
+8 16931 /tmp/tmpwDR_KX/ 4 1.20 1
+8 16930 /tmp/tmpwDR_KX/ 4 1.20 1
+8 16938 /tmp/tmpwDR_KX/ 2 1.20 1
+
+9 16923 /tmp/tmpwDR_KX/ 2 1.20 1
+9 16924 /tmp/tmpwDR_KX/ 2 1.60 1
+9 16925 /tmp/tmpwDR_KX/ 3 1.80 1
+9 16926 /tmp/tmpwDR_KX/ 4 1.20 1
+9 16927 /tmp/tmpwDR_KX/ 4 1.20 1
+9 16928 /tmp/tmpwDR_KX/ 3 1.20 1
+9 16929 /tmp/tmpwDR_KX/ 3 1.80 1
+9 16935 /tmp/tmpwDR_KX/ 3 1.80 1
+9 16933 /tmp/tmpwDR_KX/ 3 1.80 1
+9 16936 /tmp/tmpwDR_KX/ 2 1.40 1
+9 16932 /tmp/tmpwDR_KX/ 2 1.40 1
+9 16937 /tmp/tmpwDR_KX/ 3 1.80 1
+9 16934 /tmp/tmpwDR_KX/ 3 2.40 1
+9 16931 /tmp/tmpwDR_KX/ 4 1.20 1
+9 16930 /tmp/tmpwDR_KX/ 5 1.50 1
+9 16938 /tmp/tmpwDR_KX/ 3 1.80 1
+
+10 16923 /tmp/tmpwDR_KX/ 3 1.80 1
+10 16924 /tmp/tmpwDR_KX/ 2 1.60 1
+10 16925 /tmp/tmpwDR_KX/ 3 1.80 1
+10 16926 /tmp/tmpwDR_KX/ 5 1.50 1
+10 16927 /tmp/tmpwDR_KX/ 5 1.50 1
+10 16928 /tmp/tmpwDR_KX/ 4 1.60 1
+10 16929 /tmp/tmpwDR_KX/ 3 1.80 1
+10 16935 /tmp/tmpwDR_KX/ 3 1.80 1
+10 16933 /tmp/tmpwDR_KX/ 3 1.80 1
+10 16936 /tmp/tmpwDR_KX/ 3 2.10 1
+10 16932 /tmp/tmpwDR_KX/ 3 2.10 1
+10 16937 /tmp/tmpwDR_KX/ 3 1.80 1
+10 16934 /tmp/tmpwDR_KX/ 3 2.40 1
+10 16931 /tmp/tmpwDR_KX/ 5 1.50 1
+10 16930 /tmp/tmpwDR_KX/ 5 1.50 1
+10 16938 /tmp/tmpwDR_KX/ 3 1.80 1
+
+11 16923 /tmp/tmpwDR_KX/ 3 1.80 1
+11 16924 /tmp/tmpwDR_KX/ 2 1.60 1
+11 16925 /tmp/tmpwDR_KX/ 4 2.40 1
+11 16926 /tmp/tmpwDR_KX/ 5 1.50 1
+11 16927 /tmp/tmpwDR_KX/ 5 1.50 1
+11 16928 /tmp/tmpwDR_KX/ 4 1.60 1
+11 16935 /tmp/tmpwDR_KX/ 4 2.40 1
+11 16933 /tmp/tmpwDR_KX/ 4 2.40 1
+11 16936 /tmp/tmpwDR_KX/ 3 2.10 1
+11 16932 /tmp/tmpwDR_KX/ 3 2.10 1
+11 16937 /tmp/tmpwDR_KX/ 4 2.40 1
+11 16934 /tmp/tmpwDR_KX/ 4 3.20 1
+11 16931 /tmp/tmpwDR_KX/ 5 1.50 1
+11 16930 /tmp/tmpwDR_KX/ 6 1.80 1
+11 16938 /tmp/tmpwDR_KX/ 3 1.80 1
+
+12 16923 /tmp/tmpwDR_KX/ 4 2.40 1
+12 16924 /tmp/tmpwDR_KX/ 3 2.40 1
+12 16925 /tmp/tmpwDR_KX/ 4 2.40 1
+12 16926 /tmp/tmpwDR_KX/ 6 1.80 1
+12 16927 /tmp/tmpwDR_KX/ 6 1.80 1
+12 16928 /tmp/tmpwDR_KX/ 5 2.00 1
+12 16967 /tmp/tmpwDR_KX/ 0 0.00 1
+12 16935 /tmp/tmpwDR_KX/ 4 2.40 1
+12 16933 /tmp/tmpwDR_KX/ 4 2.40 1
+12 16936 /tmp/tmpwDR_KX/ 3 2.10 1
+12 16932 /tmp/tmpwDR_KX/ 3 2.10 1
+12 16937 /tmp/tmpwDR_KX/ 4 2.40 1
+12 16934 /tmp/tmpwDR_KX/ 4 3.20 1
+12 16931 /tmp/tmpwDR_KX/ 6 1.80 1
+12 16930 /tmp/tmpwDR_KX/ 6 1.80 1
+12 16938 /tmp/tmpwDR_KX/ 4 2.40 1
+
+13 16923 /tmp/tmpwDR_KX/ 4 2.40 1
+13 16924 /tmp/tmpwDR_KX/ 3 2.40 1
+13 16925 /tmp/tmpwDR_KX/ 5 3.00 1
+13 16926 /tmp/tmpwDR_KX/ 6 1.80 1
+13 16927 /tmp/tmpwDR_KX/ 6 1.80 1
+13 16928 /tmp/tmpwDR_KX/ 5 2.00 1
+13 16967 /tmp/tmpwDR_KX/ 0 0.00 1
+13 16935 /tmp/tmpwDR_KX/ 4 2.40 1
+13 16933 /tmp/tmpwDR_KX/ 5 3.00 1
+13 16936 /tmp/tmpwDR_KX/ 4 2.80 1
+13 16932 /tmp/tmpwDR_KX/ 4 2.80 1
+13 16937 /tmp/tmpwDR_KX/ 5 3.00 1
+13 16934 /tmp/tmpwDR_KX/ 4 3.20 1
+13 16931 /tmp/tmpwDR_KX/ 7 2.10 1
+13 16930 /tmp/tmpwDR_KX/ 7 2.10 1
+13 16938 /tmp/tmpwDR_KX/ 4 2.40 1
+
+14 16923 /tmp/tmpwDR_KX/ 4 2.40 1
+14 16924 /tmp/tmpwDR_KX/ 3 2.40 1
+14 16925 /tmp/tmpwDR_KX/ 5 3.00 1
+14 16926 /tmp/tmpwDR_KX/ 7 2.10 1
+14 16927 /tmp/tmpwDR_KX/ 7 2.10 1
+14 16928 /tmp/tmpwDR_KX/ 6 2.40 1
+14 16967 /tmp/tmpwDR_KX/ 1 0.60 1
+14 16935 /tmp/tmpwDR_KX/ 5 3.00 1
+14 16933 /tmp/tmpwDR_KX/ 5 3.00 1
+14 16936 /tmp/tmpwDR_KX/ 4 2.80 1
+14 16932 /tmp/tmpwDR_KX/ 4 2.80 1
+14 16937 /tmp/tmpwDR_KX/ 5 3.00 1
+14 16934 /tmp/tmpwDR_KX/ 5 4.00 1
+14 16931 /tmp/tmpwDR_KX/ 7 2.10 1
+14 16930 /tmp/tmpwDR_KX/ 7 2.10 1
+14 16938 /tmp/tmpwDR_KX/ 4 2.40 1
+
+15 16923 /tmp/tmpwDR_KX/ 5 3.00 1
+15 16924 /tmp/tmpwDR_KX/ 4 3.20 1
+15 16925 /tmp/tmpwDR_KX/ 6 3.60 1
+15 16926 /tmp/tmpwDR_KX/ 7 2.10 1
+15 16927 /tmp/tmpwDR_KX/ 8 2.40 1
+15 16928 /tmp/tmpwDR_KX/ 6 2.40 1
+15 16967 /tmp/tmpwDR_KX/ 1 0.60 1
+15 16935 /tmp/tmpwDR_KX/ 5 3.00 1
+15 16933 /tmp/tmpwDR_KX/ 6 3.60 1
+15 16936 /tmp/tmpwDR_KX/ 5 3.50 1
+15 16932 /tmp/tmpwDR_KX/ 4 2.80 1
+15 16937 /tmp/tmpwDR_KX/ 6 3.60 1
+15 16934 /tmp/tmpwDR_KX/ 5 4.00 1
+15 16931 /tmp/tmpwDR_KX/ 8 2.40 1
+15 16930 /tmp/tmpwDR_KX/ 8 2.40 1
+15 16938 /tmp/tmpwDR_KX/ 5 3.00 1
+
+16 16923 /tmp/tmpwDR_KX/ 5 3.00 1
+16 16924 /tmp/tmpwDR_KX/ 4 3.20 1
+16 16925 /tmp/tmpwDR_KX/ 6 3.60 1
+16 16926 /tmp/tmpwDR_KX/ 7 2.10 1
+16 16927 /tmp/tmpwDR_KX/ 8 2.40 1
+16 16928 /tmp/tmpwDR_KX/ 6 2.40 1
+16 16967 /tmp/tmpwDR_KX/ 1 0.60 1
+16 16935 /tmp/tmpwDR_KX/ 5 3.00 1
+16 16933 /tmp/tmpwDR_KX/ 6 3.60 1
+16 16936 /tmp/tmpwDR_KX/ 5 3.50 1
+16 16932 /tmp/tmpwDR_KX/ 5 3.50 1
+16 16937 /tmp/tmpwDR_KX/ 6 3.60 1
+16 16934 /tmp/tmpwDR_KX/ 6 4.80 1
+16 16931 /tmp/tmpwDR_KX/ 8 2.40 1
+16 16930 /tmp/tmpwDR_KX/ 8 2.40 1
+16 16938 /tmp/tmpwDR_KX/ 5 3.00 1
+
+17 16923 /tmp/tmpwDR_KX/ 5 3.00 1
+17 16924 /tmp/tmpwDR_KX/ 4 3.20 1
+17 16925 /tmp/tmpwDR_KX/ 7 4.20 1
+17 16926 /tmp/tmpwDR_KX/ 8 2.40 1
+17 16927 /tmp/tmpwDR_KX/ 9 2.70 1
+17 16928 /tmp/tmpwDR_KX/ 7 2.80 1
+17 16967 /tmp/tmpwDR_KX/ 2 1.20 1
+17 16935 /tmp/tmpwDR_KX/ 6 3.60 1
+17 16933 /tmp/tmpwDR_KX/ 7 4.20 1
+17 16936 /tmp/tmpwDR_KX/ 6 4.20 1
+17 16932 /tmp/tmpwDR_KX/ 5 3.50 1
+17 16937 /tmp/tmpwDR_KX/ 6 3.60 1
+17 16934 /tmp/tmpwDR_KX/ 6 4.80 1
+17 16931 /tmp/tmpwDR_KX/ 9 2.70 1
+17 16930 /tmp/tmpwDR_KX/ 9 2.70 1
+17 16938 /tmp/tmpwDR_KX/ 6 3.60 1
+
+18 16923 /tmp/tmpwDR_KX/ 6 3.60 1
+18 16924 /tmp/tmpwDR_KX/ 5 4.00 1
+18 16925 /tmp/tmpwDR_KX/ 7 4.20 1
+18 16926 /tmp/tmpwDR_KX/ 9 2.70 1
+18 16927 /tmp/tmpwDR_KX/ 9 2.70 1
+18 16928 /tmp/tmpwDR_KX/ 7 2.80 1
+18 16967 /tmp/tmpwDR_KX/ 2 1.20 1
+18 16935 /tmp/tmpwDR_KX/ 6 3.60 1
+18 16933 /tmp/tmpwDR_KX/ 7 4.20 1
+18 16936 /tmp/tmpwDR_KX/ 6 4.20 1
+18 16932 /tmp/tmpwDR_KX/ 5 3.50 1
+18 16937 /tmp/tmpwDR_KX/ 7 4.20 1
+18 16934 /tmp/tmpwDR_KX/ 7 5.60 1
+18 16931 /tmp/tmpwDR_KX/ 9 2.70 1
+18 16930 /tmp/tmpwDR_KX/ 9 2.70 1
+18 16938 /tmp/tmpwDR_KX/ 6 3.60 1
+
+19 16923 /tmp/tmpwDR_KX/ 6 3.60 1
+19 16924 /tmp/tmpwDR_KX/ 5 4.00 1
+19 16925 /tmp/tmpwDR_KX/ 8 4.80 1
+19 16926 /tmp/tmpwDR_KX/ 9 2.70 1
+19 16927 /tmp/tmpwDR_KX/ 10 3.00 1
+19 16928 /tmp/tmpwDR_KX/ 8 3.20 1
+19 16967 /tmp/tmpwDR_KX/ 3 1.80 1
+19 16935 /tmp/tmpwDR_KX/ 7 4.20 1
+19 16933 /tmp/tmpwDR_KX/ 7 4.20 1
+19 16936 /tmp/tmpwDR_KX/ 6 4.20 1
+19 16932 /tmp/tmpwDR_KX/ 6 4.20 1
+19 16937 /tmp/tmpwDR_KX/ 7 4.20 1
+19 16934 /tmp/tmpwDR_KX/ 7 5.60 1
+19 16931 /tmp/tmpwDR_KX/ 10 3.00 1
+19 16930 /tmp/tmpwDR_KX/ 10 3.00 1
+19 16938 /tmp/tmpwDR_KX/ 7 4.20 1
+
+20 16923 /tmp/tmpwDR_KX/ 7 4.20 1
+20 16924 /tmp/tmpwDR_KX/ 5 4.00 1
+20 16925 /tmp/tmpwDR_KX/ 8 4.80 1
+20 16926 /tmp/tmpwDR_KX/ 9 2.70 1
+20 16927 /tmp/tmpwDR_KX/ 10 3.00 1
+20 16928 /tmp/tmpwDR_KX/ 8 3.20 1
+20 16967 /tmp/tmpwDR_KX/ 3 1.80 1
+20 16935 /tmp/tmpwDR_KX/ 7 4.20 1
+20 16933 /tmp/tmpwDR_KX/ 8 4.80 1
+20 16936 /tmp/tmpwDR_KX/ 7 4.90 1
+20 16932 /tmp/tmpwDR_KX/ 6 4.20 1
+20 16937 /tmp/tmpwDR_KX/ 7 4.20 1
+20 16934 /tmp/tmpwDR_KX/ 8 6.40 1
+20 16931 /tmp/tmpwDR_KX/ 10 3.00 1
+20 16930 /tmp/tmpwDR_KX/ 10 3.00 1
+20 16938 /tmp/tmpwDR_KX/ 7 4.20 1
+
+21 16923 /tmp/tmpwDR_KX/ 7 4.20 1
+21 16924 /tmp/tmpwDR_KX/ 6 4.80 1
+21 16925 /tmp/tmpwDR_KX/ 9 5.40 1
+21 16926 /tmp/tmpwDR_KX/ 10 3.00 1
+21 16927 /tmp/tmpwDR_KX/ 11 3.30 1
+21 16928 /tmp/tmpwDR_KX/ 9 3.60 1
+21 16967 /tmp/tmpwDR_KX/ 3 1.80 1
+21 16935 /tmp/tmpwDR_KX/ 8 4.80 1
+21 16933 /tmp/tmpwDR_KX/ 8 4.80 1
+21 16936 /tmp/tmpwDR_KX/ 7 4.90 1
+21 16932 /tmp/tmpwDR_KX/ 6 4.20 1
+21 16937 /tmp/tmpwDR_KX/ 8 4.80 1
+21 16934 /tmp/tmpwDR_KX/ 8 6.40 1
+21 16931 /tmp/tmpwDR_KX/ 11 3.30 1
+21 16930 /tmp/tmpwDR_KX/ 11 3.30 1
+21 16938 /tmp/tmpwDR_KX/ 8 4.80 1
+
+22 16923 /tmp/tmpwDR_KX/ 8 4.80 1
+22 16924 /tmp/tmpwDR_KX/ 6 4.80 1
+22 16925 /tmp/tmpwDR_KX/ 9 5.40 1
+22 16926 /tmp/tmpwDR_KX/ 10 3.00 1
+22 16927 /tmp/tmpwDR_KX/ 11 3.30 1
+22 16928 /tmp/tmpwDR_KX/ 9 3.60 1
+22 16967 /tmp/tmpwDR_KX/ 3 1.80 1
+22 16935 /tmp/tmpwDR_KX/ 8 4.80 1
+22 16933 /tmp/tmpwDR_KX/ 8 4.80 1
+22 16936 /tmp/tmpwDR_KX/ 8 5.60 1
+22 16932 /tmp/tmpwDR_KX/ 7 4.90 1
+22 16937 /tmp/tmpwDR_KX/ 8 4.80 1
+22 16934 /tmp/tmpwDR_KX/ 9 7.20 1
+22 16931 /tmp/tmpwDR_KX/ 11 3.30 1
+22 16930 /tmp/tmpwDR_KX/ 11 3.30 1
+22 16938 /tmp/tmpwDR_KX/ 8 4.80 1
+
+23 16923 /tmp/tmpwDR_KX/ 8 4.80 1
+23 16924 /tmp/tmpwDR_KX/ 6 4.80 1
+23 16925 /tmp/tmpwDR_KX/ 10 6.00 1
+23 16926 /tmp/tmpwDR_KX/ 11 3.30 1
+23 16927 /tmp/tmpwDR_KX/ 12 3.60 1
+23 16928 /tmp/tmpwDR_KX/ 10 4.00 1
+23 16967 /tmp/tmpwDR_KX/ 4 2.40 1
+23 16935 /tmp/tmpwDR_KX/ 8 4.80 1
+23 16933 /tmp/tmpwDR_KX/ 9 5.40 1
+23 16936 /tmp/tmpwDR_KX/ 8 5.60 1
+23 16932 /tmp/tmpwDR_KX/ 7 4.90 1
+23 16937 /tmp/tmpwDR_KX/ 8 4.80 1
+23 16934 /tmp/tmpwDR_KX/ 9 7.20 1
+23 16931 /tmp/tmpwDR_KX/ 12 3.60 1
+23 16930 /tmp/tmpwDR_KX/ 12 3.60 1
+23 16938 /tmp/tmpwDR_KX/ 8 4.80 1
+
+24 16923 /tmp/tmpwDR_KX/ 8 4.80 1
+24 16924 /tmp/tmpwDR_KX/ 7 5.60 1
+24 16925 /tmp/tmpwDR_KX/ 10 6.00 1
+24 16926 /tmp/tmpwDR_KX/ 11 3.30 1
+24 16927 /tmp/tmpwDR_KX/ 13 3.90 1
+24 16928 /tmp/tmpwDR_KX/ 10 4.00 1
+24 16967 /tmp/tmpwDR_KX/ 4 2.40 1
+24 16935 /tmp/tmpwDR_KX/ 9 5.40 1
+24 16933 /tmp/tmpwDR_KX/ 9 5.40 1
+24 16936 /tmp/tmpwDR_KX/ 9 6.30 1
+24 16932 /tmp/tmpwDR_KX/ 7 4.90 1
+24 16937 /tmp/tmpwDR_KX/ 9 5.40 1
+24 16934 /tmp/tmpwDR_KX/ 10 8.00 1
+24 16931 /tmp/tmpwDR_KX/ 13 3.90 1
+24 16930 /tmp/tmpwDR_KX/ 13 3.90 1
+24 16938 /tmp/tmpwDR_KX/ 9 5.40 1
+
+25 16923 /tmp/tmpwDR_KX/ 9 5.40 1
+25 16924 /tmp/tmpwDR_KX/ 7 5.60 1
+25 16925 /tmp/tmpwDR_KX/ 11 6.60 1
+25 16926 /tmp/tmpwDR_KX/ 12 3.60 1
+25 16927 /tmp/tmpwDR_KX/ 13 3.90 1
+25 16928 /tmp/tmpwDR_KX/ 11 4.40 1
+25 16967 /tmp/tmpwDR_KX/ 5 3.00 1
+25 16935 /tmp/tmpwDR_KX/ 9 5.40 1
+25 16933 /tmp/tmpwDR_KX/ 9 5.40 1
+25 16936 /tmp/tmpwDR_KX/ 9 6.30 1
+25 16932 /tmp/tmpwDR_KX/ 8 5.60 1
+25 16937 /tmp/tmpwDR_KX/ 9 5.40 1
+25 16934 /tmp/tmpwDR_KX/ 10 8.00 1
+25 16931 /tmp/tmpwDR_KX/ 13 3.90 1
+25 16930 /tmp/tmpwDR_KX/ 13 3.90 1
+25 16938 /tmp/tmpwDR_KX/ 9 5.40 1
+
+26 16923 /tmp/tmpwDR_KX/ 9 5.40 1
+26 16924 /tmp/tmpwDR_KX/ 7 5.60 1
+26 16925 /tmp/tmpwDR_KX/ 11 6.60 1
+26 16926 /tmp/tmpwDR_KX/ 13 3.90 1
+26 16927 /tmp/tmpwDR_KX/ 14 4.20 1
+26 16928 /tmp/tmpwDR_KX/ 11 4.40 1
+26 16967 /tmp/tmpwDR_KX/ 5 3.00 1
+26 16935 /tmp/tmpwDR_KX/ 9 5.40 1
+26 16933 /tmp/tmpwDR_KX/ 10 6.00 1
+26 16936 /tmp/tmpwDR_KX/ 9 6.30 1
+26 16932 /tmp/tmpwDR_KX/ 8 5.60 1
+26 16937 /tmp/tmpwDR_KX/ 9 5.40 1
+26 16934 /tmp/tmpwDR_KX/ 11 8.80 1
+26 16931 /tmp/tmpwDR_KX/ 14 4.20 1
+26 16930 /tmp/tmpwDR_KX/ 14 4.20 1
+26 16938 /tmp/tmpwDR_KX/ 10 6.00 1
+
+27 16923 /tmp/tmpwDR_KX/ 10 6.00 1
+27 16924 /tmp/tmpwDR_KX/ 8 6.40 1
+27 16925 /tmp/tmpwDR_KX/ 12 7.20 1
+27 16926 /tmp/tmpwDR_KX/ 14 4.20 1
+27 16927 /tmp/tmpwDR_KX/ 14 4.20 1
+27 16928 /tmp/tmpwDR_KX/ 12 4.80 1
+27 16967 /tmp/tmpwDR_KX/ 5 3.00 1
+27 16935 /tmp/tmpwDR_KX/ 10 6.00 1
+27 16933 /tmp/tmpwDR_KX/ 10 6.00 1
+27 16936 /tmp/tmpwDR_KX/ 9 6.30 1
+27 16932 /tmp/tmpwDR_KX/ 8 5.60 1
+27 16937 /tmp/tmpwDR_KX/ 10 6.00 1
+27 16934 /tmp/tmpwDR_KX/ 11 8.80 1
+27 16931 /tmp/tmpwDR_KX/ 14 4.20 1
+27 16930 /tmp/tmpwDR_KX/ 15 4.50 1
+27 16938 /tmp/tmpwDR_KX/ 10 6.00 1
+
+28 16923 /tmp/tmpwDR_KX/ 10 6.00 1
+28 16924 /tmp/tmpwDR_KX/ 8 6.40 1
+28 16925 /tmp/tmpwDR_KX/ 12 7.20 1
+28 16926 /tmp/tmpwDR_KX/ 14 4.20 1
+28 16927 /tmp/tmpwDR_KX/ 15 4.50 1
+28 16928 /tmp/tmpwDR_KX/ 12 4.80 1
+28 16967 /tmp/tmpwDR_KX/ 6 3.60 1
+28 16935 /tmp/tmpwDR_KX/ 10 6.00 1
+28 16933 /tmp/tmpwDR_KX/ 11 6.60 1
+28 16936 /tmp/tmpwDR_KX/ 10 7.00 1
+28 16932 /tmp/tmpwDR_KX/ 9 6.30 1
+28 16937 /tmp/tmpwDR_KX/ 10 6.00 1
+28 16934 /tmp/tmpwDR_KX/ 12 9.60 1
+28 16931 /tmp/tmpwDR_KX/ 15 4.50 1
+28 16930 /tmp/tmpwDR_KX/ 15 4.50 1
+28 16938 /tmp/tmpwDR_KX/ 11 6.60 1
+
+29 16923 /tmp/tmpwDR_KX/ 11 6.60 1
+29 16924 /tmp/tmpwDR_KX/ 8 6.40 1
+29 16925 /tmp/tmpwDR_KX/ 12 7.20 1
+29 16926 /tmp/tmpwDR_KX/ 15 4.50 1
+29 16927 /tmp/tmpwDR_KX/ 16 4.80 1
+29 16928 /tmp/tmpwDR_KX/ 12 4.80 1
+29 16967 /tmp/tmpwDR_KX/ 6 3.60 1
+29 16935 /tmp/tmpwDR_KX/ 10 6.00 1
+29 16933 /tmp/tmpwDR_KX/ 11 6.60 1
+29 16936 /tmp/tmpwDR_KX/ 10 7.00 1
+29 16932 /tmp/tmpwDR_KX/ 9 6.30 1
+29 16937 /tmp/tmpwDR_KX/ 11 6.60 1
+29 16934 /tmp/tmpwDR_KX/ 12 9.60 1
+29 16931 /tmp/tmpwDR_KX/ 15 4.50 1
+29 16930 /tmp/tmpwDR_KX/ 16 4.80 1
+29 16938 /tmp/tmpwDR_KX/ 11 6.60 1
+
+30 16923 /tmp/tmpwDR_KX/ 11 6.60 1
+30 16924 /tmp/tmpwDR_KX/ 8 6.40 1
+30 16925 /tmp/tmpwDR_KX/ 13 7.80 1
+30 16926 /tmp/tmpwDR_KX/ 16 4.80 1
+30 16927 /tmp/tmpwDR_KX/ 16 4.80 1
+30 16928 /tmp/tmpwDR_KX/ 13 5.20 1
+30 16967 /tmp/tmpwDR_KX/ 7 4.20 1
+30 16935 /tmp/tmpwDR_KX/ 11 6.60 1
+30 16933 /tmp/tmpwDR_KX/ 11 6.60 1
+30 16936 /tmp/tmpwDR_KX/ 10 7.00 1
+30 16932 /tmp/tmpwDR_KX/ 9 6.30 1
+30 16937 /tmp/tmpwDR_KX/ 11 6.60 1
+30 16934 /tmp/tmpwDR_KX/ 13 10.40 1
+30 16931 /tmp/tmpwDR_KX/ 16 4.80 1
+30 16930 /tmp/tmpwDR_KX/ 16 4.80 1
+30 16938 /tmp/tmpwDR_KX/ 12 7.20 1
+
+31 16923 /tmp/tmpwDR_KX/ 11 6.60 1
+31 16924 /tmp/tmpwDR_KX/ 9 7.20 1
+31 16925 /tmp/tmpwDR_KX/ 13 7.80 1
+31 16926 /tmp/tmpwDR_KX/ 16 4.80 1
+31 16927 /tmp/tmpwDR_KX/ 17 5.10 1
+31 16928 /tmp/tmpwDR_KX/ 13 5.20 1
+31 16967 /tmp/tmpwDR_KX/ 7 4.20 1
+31 16935 /tmp/tmpwDR_KX/ 11 6.60 1
+31 16933 /tmp/tmpwDR_KX/ 12 7.20 1
+31 16936 /tmp/tmpwDR_KX/ 11 7.70 1
+31 16932 /tmp/tmpwDR_KX/ 10 7.00 1
+31 16937 /tmp/tmpwDR_KX/ 11 6.60 1
+31 16934 /tmp/tmpwDR_KX/ 13 10.40 1
+31 16931 /tmp/tmpwDR_KX/ 17 5.10 1
+31 16930 /tmp/tmpwDR_KX/ 17 5.10 1
+31 16938 /tmp/tmpwDR_KX/ 12 7.20 1
+
+
+
+test manyclients2 PASSED (6 of 6)
+ (Check that when a client leaves, another can enter)
+
+starting valgrind
+
+**********************************************************************
+
+Test valgrind
+essentially, manyclients2 run for longer and with valgrind
+
+**********************************************************************
+running server with: /usr/bin/valgrind --show-reachable=yes --xml=yes --xml-file=/tmp/tmpwDR_KX/p/17.xml /tmp/tmpwDR_KX/p/stats_server -k 1654
+running client with: /usr/bin/valgrind --show-reachable=yes --xml=yes --xml-file=/tmp/tmpwDR_KX/p/0.xml /tmp/tmpwDR_KX/p/stats_client -p 1 -s 500000000 -c 500000000 -k 1654
+running client with: /usr/bin/valgrind --show-reachable=yes --xml=yes --xml-file=/tmp/tmpwDR_KX/p/1.xml /tmp/tmpwDR_KX/p/stats_client -c 500000000 -p 1 -s 500000000 -k 1654
+running client with: /usr/bin/valgrind --show-reachable=yes --xml=yes --xml-file=/tmp/tmpwDR_KX/p/2.xml /tmp/tmpwDR_KX/p/stats_client -c 400000000 -s 600000000 -k 1654 -p 1
+running client with: /usr/bin/valgrind --show-reachable=yes --xml=yes --xml-file=/tmp/tmpwDR_KX/p/3.xml /tmp/tmpwDR_KX/p/stats_client -c 700000000 -s 300000000 -k 1654 -p 1
+running client with: /usr/bin/valgrind --show-reachable=yes --xml=yes --xml-file=/tmp/tmpwDR_KX/p/4.xml /tmp/tmpwDR_KX/p/stats_client -p 1 -k 1654 -c 400000000 -s 600000000
+running client with: /usr/bin/valgrind --show-reachable=yes --xml=yes --xml-file=/tmp/tmpwDR_KX/p/5.xml /tmp/tmpwDR_KX/p/stats_client -c 800000000 -s 200000000 -k 1654 -p 1
+running client with: /usr/bin/valgrind --show-reachable=yes --xml=yes --xml-file=/tmp/tmpwDR_KX/p/6.xml /tmp/tmpwDR_KX/p/stats_client -k 1654 -c 600000000 -p 1 -s 400000000
+running client with: /usr/bin/valgrind --show-reachable=yes --xml=yes --xml-file=/tmp/tmpwDR_KX/p/7.xml /tmp/tmpwDR_KX/p/stats_client -c 300000000 -s 700000000 -p 1 -k 1654
+running client with: /usr/bin/valgrind --show-reachable=yes --xml=yes --xml-file=/tmp/tmpwDR_KX/p/8.xml /tmp/tmpwDR_KX/p/stats_client -s 400000000 -p 1 -c 600000000 -k 1654
+running client with: /usr/bin/valgrind --show-reachable=yes --xml=yes --xml-file=/tmp/tmpwDR_KX/p/9.xml /tmp/tmpwDR_KX/p/stats_client -s 200000000 -c 800000000 -k 1654 -p 1
+running client with: /usr/bin/valgrind --show-reachable=yes --xml=yes --xml-file=/tmp/tmpwDR_KX/p/10.xml /tmp/tmpwDR_KX/p/stats_client -p 1 -s 200000000 -k 1654 -c 800000000
+running client with: /usr/bin/valgrind --show-reachable=yes --xml=yes --xml-file=/tmp/tmpwDR_KX/p/11.xml /tmp/tmpwDR_KX/p/stats_client -c 800000000 -k 1654 -s 200000000 -p 1
+running client with: /usr/bin/valgrind --show-reachable=yes --xml=yes --xml-file=/tmp/tmpwDR_KX/p/12.xml /tmp/tmpwDR_KX/p/stats_client -p 1 -s 400000000 -k 1654 -c 600000000
+running client with: /usr/bin/valgrind --show-reachable=yes --xml=yes --xml-file=/tmp/tmpwDR_KX/p/13.xml /tmp/tmpwDR_KX/p/stats_client -c 400000000 -s 600000000 -k 1654 -p 1
+running client with: /usr/bin/valgrind --show-reachable=yes --xml=yes --xml-file=/tmp/tmpwDR_KX/p/14.xml /tmp/tmpwDR_KX/p/stats_client -k 1654 -p 1 -s 400000000 -c 600000000
+running client with: /usr/bin/valgrind --show-reachable=yes --xml=yes --xml-file=/tmp/tmpwDR_KX/p/15.xml /tmp/tmpwDR_KX/p/stats_client -p 1 -c 300000000 -s 700000000 -k 1654
+running client with: /usr/bin/valgrind --show-reachable=yes --xml=yes --xml-file=/tmp/tmpwDR_KX/p/16.xml /tmp/tmpwDR_KX/p/stats_client -c 400000000 -s 600000000 -k 1654 -p 1
+server output:
+
+
+2 16992 /tmp/tmpwDR_KX/ 0 0.00 1
+2 16990 /tmp/tmpwDR_KX/ 0 0.00 1
+2 16995 /tmp/tmpwDR_KX/ 0 0.00 1
+2 17000 /tmp/tmpwDR_KX/ 0 0.00 1
+2 16999 /tmp/tmpwDR_KX/ 0 0.00 1
+2 16997 /tmp/tmpwDR_KX/ 0 0.00 1
+2 17001 /tmp/tmpwDR_KX/ 0 0.00 1
+2 17002 /tmp/tmpwDR_KX/ 0 0.00 1
+2 16993 /tmp/tmpwDR_KX/ 0 0.00 1
+2 17005 /tmp/tmpwDR_KX/ 0 0.00 1
+
+3 16992 /tmp/tmpwDR_KX/ 0 0.00 1
+3 16990 /tmp/tmpwDR_KX/ 0 0.00 1
+3 16995 /tmp/tmpwDR_KX/ 0 0.00 1
+3 17000 /tmp/tmpwDR_KX/ 0 0.00 1
+3 16999 /tmp/tmpwDR_KX/ 0 0.00 1
+3 16997 /tmp/tmpwDR_KX/ 0 0.00 1
+3 17001 /tmp/tmpwDR_KX/ 0 0.00 1
+3 17002 /tmp/tmpwDR_KX/ 0 0.00 1
+3 16993 /tmp/tmpwDR_KX/ 0 0.00 1
+3 17005 /tmp/tmpwDR_KX/ 0 0.00 1
+
+4 16992 /tmp/tmpwDR_KX/ 1 0.40 1
+4 16990 /tmp/tmpwDR_KX/ 0 0.00 1
+4 16995 /tmp/tmpwDR_KX/ 0 0.00 1
+4 17000 /tmp/tmpwDR_KX/ 0 0.00 1
+4 16999 /tmp/tmpwDR_KX/ 1 0.40 1
+4 16997 /tmp/tmpwDR_KX/ 2 0.30 1
+4 17001 /tmp/tmpwDR_KX/ 1 0.60 1
+4 17002 /tmp/tmpwDR_KX/ 0 0.00 1
+4 16993 /tmp/tmpwDR_KX/ 0 0.00 1
+4 17005 /tmp/tmpwDR_KX/ 1 0.30 1
+
+5 16992 /tmp/tmpwDR_KX/ 1 0.40 1
+5 16990 /tmp/tmpwDR_KX/ 1 0.50 1
+5 16995 /tmp/tmpwDR_KX/ 1 0.80 1
+5 17000 /tmp/tmpwDR_KX/ 1 0.80 1
+5 16999 /tmp/tmpwDR_KX/ 2 0.80 1
+5 16997 /tmp/tmpwDR_KX/ 2 0.30 1
+5 17001 /tmp/tmpwDR_KX/ 2 0.80 1
+5 17002 /tmp/tmpwDR_KX/ 1 0.60 1
+5 16993 /tmp/tmpwDR_KX/ 1 0.70 1
+5 17005 /tmp/tmpwDR_KX/ 4 0.60 1
+
+6 16992 /tmp/tmpwDR_KX/ 2 0.80 1
+6 16990 /tmp/tmpwDR_KX/ 2 1.00 1
+6 16995 /tmp/tmpwDR_KX/ 1 0.80 1
+6 17000 /tmp/tmpwDR_KX/ 1 0.80 1
+6 16999 /tmp/tmpwDR_KX/ 3 0.80 1
+6 16997 /tmp/tmpwDR_KX/ 4 1.00 1
+6 17001 /tmp/tmpwDR_KX/ 3 1.20 1
+6 17002 /tmp/tmpwDR_KX/ 1 0.60 1
+6 16993 /tmp/tmpwDR_KX/ 1 0.70 1
+6 17005 /tmp/tmpwDR_KX/ 5 0.60 1
+
+7 16992 /tmp/tmpwDR_KX/ 2 0.80 1
+7 16990 /tmp/tmpwDR_KX/ 2 1.00 1
+7 16995 /tmp/tmpwDR_KX/ 1 0.80 1
+7 17000 /tmp/tmpwDR_KX/ 2 1.60 1
+7 16999 /tmp/tmpwDR_KX/ 3 0.80 1
+7 16997 /tmp/tmpwDR_KX/ 4 1.00 1
+7 17001 /tmp/tmpwDR_KX/ 4 1.60 1
+7 17002 /tmp/tmpwDR_KX/ 2 1.20 1
+7 16993 /tmp/tmpwDR_KX/ 1 0.70 1
+7 17005 /tmp/tmpwDR_KX/ 6 0.80 1
+
+8 16992 /tmp/tmpwDR_KX/ 3 1.20 1
+8 16990 /tmp/tmpwDR_KX/ 3 1.50 1
+8 16995 /tmp/tmpwDR_KX/ 2 1.60 1
+8 17000 /tmp/tmpwDR_KX/ 2 1.60 1
+8 16999 /tmp/tmpwDR_KX/ 5 1.20 1
+8 16997 /tmp/tmpwDR_KX/ 5 0.90 1
+8 17001 /tmp/tmpwDR_KX/ 5 1.80 1
+8 17002 /tmp/tmpwDR_KX/ 2 1.20 1
+8 16993 /tmp/tmpwDR_KX/ 2 1.40 1
+8 17005 /tmp/tmpwDR_KX/ 9 1.20 1
+
+9 16992 /tmp/tmpwDR_KX/ 3 1.20 1
+9 16990 /tmp/tmpwDR_KX/ 3 1.50 1
+9 16995 /tmp/tmpwDR_KX/ 2 1.60 1
+9 17000 /tmp/tmpwDR_KX/ 2 1.60 1
+9 16999 /tmp/tmpwDR_KX/ 5 1.20 1
+9 16997 /tmp/tmpwDR_KX/ 6 1.50 1
+9 17001 /tmp/tmpwDR_KX/ 5 1.80 1
+9 17002 /tmp/tmpwDR_KX/ 2 1.20 1
+9 16993 /tmp/tmpwDR_KX/ 2 1.40 1
+9 17005 /tmp/tmpwDR_KX/ 11 1.20 1
+
+10 16992 /tmp/tmpwDR_KX/ 4 1.60 1
+10 16990 /tmp/tmpwDR_KX/ 4 2.00 1
+10 17000 /tmp/tmpwDR_KX/ 2 1.60 1
+10 16999 /tmp/tmpwDR_KX/ 6 1.60 1
+10 16997 /tmp/tmpwDR_KX/ 7 1.20 1
+10 17001 /tmp/tmpwDR_KX/ 7 2.40 1
+10 17002 /tmp/tmpwDR_KX/ 3 1.80 1
+10 16993 /tmp/tmpwDR_KX/ 2 1.40 1
+10 17005 /tmp/tmpwDR_KX/ 13 1.50 1
+
+11 16992 /tmp/tmpwDR_KX/ 5 2.00 1
+11 16990 /tmp/tmpwDR_KX/ 4 2.00 1
+11 17000 /tmp/tmpwDR_KX/ 3 2.40 1
+11 16999 /tmp/tmpwDR_KX/ 6 1.60 1
+11 16997 /tmp/tmpwDR_KX/ 8 2.00 1
+11 17001 /tmp/tmpwDR_KX/ 8 3.00 1
+11 17002 /tmp/tmpwDR_KX/ 4 2.40 1
+11 16993 /tmp/tmpwDR_KX/ 2 1.40 1
+11 17005 /tmp/tmpwDR_KX/ 15 1.80 1
+
+12 16992 /tmp/tmpwDR_KX/ 5 2.00 1
+12 16990 /tmp/tmpwDR_KX/ 4 2.00 1
+12 17028 /tmp/tmpwDR_KX/ 0 0.00 1
+12 17000 /tmp/tmpwDR_KX/ 3 2.40 1
+12 16999 /tmp/tmpwDR_KX/ 8 2.00 1
+12 16997 /tmp/tmpwDR_KX/ 9 1.50 1
+12 17001 /tmp/tmpwDR_KX/ 8 3.00 1
+12 17002 /tmp/tmpwDR_KX/ 4 2.40 1
+12 16993 /tmp/tmpwDR_KX/ 3 2.10 1
+12 17005 /tmp/tmpwDR_KX/ 17 1.80 1
+
+13 16992 /tmp/tmpwDR_KX/ 5 2.00 1
+13 16990 /tmp/tmpwDR_KX/ 5 2.50 1
+13 17028 /tmp/tmpwDR_KX/ 0 0.00 1
+13 17000 /tmp/tmpwDR_KX/ 3 2.40 1
+13 16999 /tmp/tmpwDR_KX/ 8 2.00 1
+13 16997 /tmp/tmpwDR_KX/ 9 1.50 1
+13 17001 /tmp/tmpwDR_KX/ 10 3.60 1
+13 17002 /tmp/tmpwDR_KX/ 4 2.40 1
+13 16993 /tmp/tmpwDR_KX/ 3 2.10 1
+13 17005 /tmp/tmpwDR_KX/ 18 2.00 1
+
+14 16992 /tmp/tmpwDR_KX/ 6 2.40 1
+14 16990 /tmp/tmpwDR_KX/ 5 2.50 1
+14 17028 /tmp/tmpwDR_KX/ 0 0.00 1
+14 17000 /tmp/tmpwDR_KX/ 4 3.20 1
+14 16999 /tmp/tmpwDR_KX/ 10 2.40 1
+14 16997 /tmp/tmpwDR_KX/ 11 2.50 1
+14 17001 /tmp/tmpwDR_KX/ 10 3.60 1
+14 17002 /tmp/tmpwDR_KX/ 5 3.00 1
+14 16993 /tmp/tmpwDR_KX/ 3 2.10 1
+14 17005 /tmp/tmpwDR_KX/ 21 2.40 1
+
+15 16992 /tmp/tmpwDR_KX/ 6 2.40 1
+15 16990 /tmp/tmpwDR_KX/ 6 3.00 1
+15 17028 /tmp/tmpwDR_KX/ 1 0.40 1
+15 17000 /tmp/tmpwDR_KX/ 4 3.20 1
+15 16999 /tmp/tmpwDR_KX/ 10 2.40 1
+15 16997 /tmp/tmpwDR_KX/ 11 2.50 1
+15 17001 /tmp/tmpwDR_KX/ 12 4.00 1
+15 17002 /tmp/tmpwDR_KX/ 5 3.00 1
+15 16993 /tmp/tmpwDR_KX/ 4 2.80 1
+15 17005 /tmp/tmpwDR_KX/ 22 2.10 1
+
+16 16992 /tmp/tmpwDR_KX/ 7 2.80 1
+16 16990 /tmp/tmpwDR_KX/ 6 3.00 1
+16 17028 /tmp/tmpwDR_KX/ 1 0.40 1
+16 17000 /tmp/tmpwDR_KX/ 4 3.20 1
+16 16999 /tmp/tmpwDR_KX/ 11 2.80 1
+16 16997 /tmp/tmpwDR_KX/ 12 2.10 1
+16 17001 /tmp/tmpwDR_KX/ 12 4.00 1
+16 17002 /tmp/tmpwDR_KX/ 5 3.00 1
+16 16993 /tmp/tmpwDR_KX/ 4 2.80 1
+16 17005 /tmp/tmpwDR_KX/ 23 2.80 1
+
+17 16992 /tmp/tmpwDR_KX/ 7 2.80 1
+17 16990 /tmp/tmpwDR_KX/ 7 3.50 1
+17 17028 /tmp/tmpwDR_KX/ 2 0.80 1
+17 17000 /tmp/tmpwDR_KX/ 5 4.00 1
+17 16999 /tmp/tmpwDR_KX/ 12 4.00 1
+17 16997 /tmp/tmpwDR_KX/ 13 3.00 1
+17 17001 /tmp/tmpwDR_KX/ 13 4.80 1
+17 17002 /tmp/tmpwDR_KX/ 6 3.60 1
+17 16993 /tmp/tmpwDR_KX/ 5 3.50 1
+17 17005 /tmp/tmpwDR_KX/ 26 3.00 1
+
+18 16992 /tmp/tmpwDR_KX/ 8 3.20 1
+18 16990 /tmp/tmpwDR_KX/ 7 3.50 1
+18 17028 /tmp/tmpwDR_KX/ 2 0.80 1
+18 17000 /tmp/tmpwDR_KX/ 5 4.00 1
+18 16999 /tmp/tmpwDR_KX/ 13 3.20 1
+18 16997 /tmp/tmpwDR_KX/ 14 2.40 1
+18 17001 /tmp/tmpwDR_KX/ 14 4.80 1
+18 17002 /tmp/tmpwDR_KX/ 6 3.60 1
+18 16993 /tmp/tmpwDR_KX/ 5 3.50 1
+18 17005 /tmp/tmpwDR_KX/ 28 2.70 1
+
+19 16992 /tmp/tmpwDR_KX/ 8 3.20 1
+19 16990 /tmp/tmpwDR_KX/ 7 3.50 1
+19 17028 /tmp/tmpwDR_KX/ 3 1.20 1
+19 17000 /tmp/tmpwDR_KX/ 5 4.00 1
+19 16999 /tmp/tmpwDR_KX/ 13 3.20 1
+19 16997 /tmp/tmpwDR_KX/ 16 2.70 1
+19 17001 /tmp/tmpwDR_KX/ 15 5.40 1
+19 17002 /tmp/tmpwDR_KX/ 7 4.20 1
+19 16993 /tmp/tmpwDR_KX/ 5 3.50 1
+19 17005 /tmp/tmpwDR_KX/ 30 4.20 1
+
+20 16992 /tmp/tmpwDR_KX/ 9 3.60 1
+20 16990 /tmp/tmpwDR_KX/ 8 4.00 1
+20 17028 /tmp/tmpwDR_KX/ 4 1.60 1
+20 17000 /tmp/tmpwDR_KX/ 6 4.80 1
+20 16999 /tmp/tmpwDR_KX/ 15 4.80 1
+20 16997 /tmp/tmpwDR_KX/ 16 2.70 1
+20 17001 /tmp/tmpwDR_KX/ 16 5.60 1
+20 17002 /tmp/tmpwDR_KX/ 7 4.20 1
+20 16993 /tmp/tmpwDR_KX/ 6 4.20 1
+20 17005 /tmp/tmpwDR_KX/ 32 3.00 1
+
+21 16992 /tmp/tmpwDR_KX/ 9 3.60 1
+21 16990 /tmp/tmpwDR_KX/ 8 4.00 1
+21 17028 /tmp/tmpwDR_KX/ 4 1.60 1
+21 17000 /tmp/tmpwDR_KX/ 6 4.80 1
+21 16999 /tmp/tmpwDR_KX/ 15 4.80 1
+21 16997 /tmp/tmpwDR_KX/ 18 4.00 1
+21 17001 /tmp/tmpwDR_KX/ 17 6.00 1
+21 17002 /tmp/tmpwDR_KX/ 7 4.20 1
+21 16993 /tmp/tmpwDR_KX/ 6 4.20 1
+21 17005 /tmp/tmpwDR_KX/ 34 4.80 1
+
+22 16992 /tmp/tmpwDR_KX/ 10 4.00 1
+22 16990 /tmp/tmpwDR_KX/ 9 4.50 1
+22 17028 /tmp/tmpwDR_KX/ 5 2.00 1
+22 17000 /tmp/tmpwDR_KX/ 7 5.60 1
+22 16999 /tmp/tmpwDR_KX/ 16 4.00 1
+22 16997 /tmp/tmpwDR_KX/ 19 3.30 1
+22 17001 /tmp/tmpwDR_KX/ 17 6.00 1
+22 17002 /tmp/tmpwDR_KX/ 8 4.80 1
+22 16993 /tmp/tmpwDR_KX/ 7 4.90 1
+22 17005 /tmp/tmpwDR_KX/ 36 3.30 1
+
+23 16992 /tmp/tmpwDR_KX/ 10 4.00 1
+23 16990 /tmp/tmpwDR_KX/ 9 4.50 1
+23 17028 /tmp/tmpwDR_KX/ 5 2.00 1
+23 17000 /tmp/tmpwDR_KX/ 7 5.60 1
+23 16999 /tmp/tmpwDR_KX/ 17 5.60 1
+23 16997 /tmp/tmpwDR_KX/ 20 4.50 1
+23 17001 /tmp/tmpwDR_KX/ 19 6.40 1
+23 17002 /tmp/tmpwDR_KX/ 8 4.80 1
+23 16993 /tmp/tmpwDR_KX/ 7 4.90 1
+23 17005 /tmp/tmpwDR_KX/ 36 3.30 1
+
+24 16992 /tmp/tmpwDR_KX/ 11 4.40 1
+24 16990 /tmp/tmpwDR_KX/ 10 5.00 1
+24 17028 /tmp/tmpwDR_KX/ 6 2.40 1
+24 17000 /tmp/tmpwDR_KX/ 7 5.60 1
+24 16999 /tmp/tmpwDR_KX/ 18 4.40 1
+24 16997 /tmp/tmpwDR_KX/ 21 3.60 1
+24 17001 /tmp/tmpwDR_KX/ 19 6.40 1
+24 17002 /tmp/tmpwDR_KX/ 9 5.40 1
+24 16993 /tmp/tmpwDR_KX/ 7 4.90 1
+24 17005 /tmp/tmpwDR_KX/ 40 5.40 1
+
+25 16992 /tmp/tmpwDR_KX/ 11 4.40 1
+25 16990 /tmp/tmpwDR_KX/ 10 5.00 1
+25 17028 /tmp/tmpwDR_KX/ 6 2.40 1
+25 17000 /tmp/tmpwDR_KX/ 8 6.40 1
+25 16999 /tmp/tmpwDR_KX/ 18 4.40 1
+25 16997 /tmp/tmpwDR_KX/ 21 3.60 1
+25 17001 /tmp/tmpwDR_KX/ 20 7.20 1
+25 17002 /tmp/tmpwDR_KX/ 9 5.40 1
+25 16993 /tmp/tmpwDR_KX/ 8 5.60 1
+25 17005 /tmp/tmpwDR_KX/ 41 4.80 1
+
+26 16992 /tmp/tmpwDR_KX/ 12 4.80 1
+26 16990 /tmp/tmpwDR_KX/ 10 5.00 1
+26 17028 /tmp/tmpwDR_KX/ 7 2.80 1
+26 17000 /tmp/tmpwDR_KX/ 8 6.40 1
+26 16999 /tmp/tmpwDR_KX/ 20 6.40 1
+26 16997 /tmp/tmpwDR_KX/ 23 3.90 1
+26 17001 /tmp/tmpwDR_KX/ 21 7.20 1
+26 17002 /tmp/tmpwDR_KX/ 9 5.40 1
+26 16993 /tmp/tmpwDR_KX/ 8 5.60 1
+26 17005 /tmp/tmpwDR_KX/ 43 5.40 1
+
+27 16992 /tmp/tmpwDR_KX/ 12 4.80 1
+27 16990 /tmp/tmpwDR_KX/ 11 5.50 1
+27 17028 /tmp/tmpwDR_KX/ 7 2.80 1
+27 17000 /tmp/tmpwDR_KX/ 9 7.20 1
+27 16999 /tmp/tmpwDR_KX/ 20 6.40 1
+27 16997 /tmp/tmpwDR_KX/ 23 3.90 1
+27 17001 /tmp/tmpwDR_KX/ 22 7.80 1
+27 17002 /tmp/tmpwDR_KX/ 10 6.00 1
+27 16993 /tmp/tmpwDR_KX/ 8 5.60 1
+27 17005 /tmp/tmpwDR_KX/ 46 4.20 1
+
+28 16992 /tmp/tmpwDR_KX/ 13 5.20 1
+28 16990 /tmp/tmpwDR_KX/ 12 6.00 1
+28 17028 /tmp/tmpwDR_KX/ 8 3.20 1
+28 17000 /tmp/tmpwDR_KX/ 9 7.20 1
+28 16999 /tmp/tmpwDR_KX/ 21 5.20 1
+28 16997 /tmp/tmpwDR_KX/ 25 5.50 1
+28 17001 /tmp/tmpwDR_KX/ 22 7.80 1
+28 17002 /tmp/tmpwDR_KX/ 10 6.00 1
+28 16993 /tmp/tmpwDR_KX/ 9 6.30 1
+28 17005 /tmp/tmpwDR_KX/ 47 5.60 1
+
+29 16992 /tmp/tmpwDR_KX/ 13 5.20 1
+29 16990 /tmp/tmpwDR_KX/ 12 6.00 1
+29 17028 /tmp/tmpwDR_KX/ 8 3.20 1
+29 17000 /tmp/tmpwDR_KX/ 9 7.20 1
+29 16999 /tmp/tmpwDR_KX/ 22 7.20 1
+29 16997 /tmp/tmpwDR_KX/ 26 4.50 1
+29 17001 /tmp/tmpwDR_KX/ 24 8.00 1
+29 17002 /tmp/tmpwDR_KX/ 11 6.60 1
+29 16993 /tmp/tmpwDR_KX/ 9 6.30 1
+29 17005 /tmp/tmpwDR_KX/ 49 4.50 1
+
+30 16992 /tmp/tmpwDR_KX/ 14 5.60 1
+30 16990 /tmp/tmpwDR_KX/ 12 6.00 1
+30 17028 /tmp/tmpwDR_KX/ 8 3.20 1
+30 17000 /tmp/tmpwDR_KX/ 10 8.00 1
+30 16999 /tmp/tmpwDR_KX/ 23 5.60 1
+30 16997 /tmp/tmpwDR_KX/ 27 6.00 1
+30 17001 /tmp/tmpwDR_KX/ 24 8.00 1
+30 17002 /tmp/tmpwDR_KX/ 11 6.60 1
+30 16993 /tmp/tmpwDR_KX/ 9 6.30 1
+30 17005 /tmp/tmpwDR_KX/ 51 6.60 1
+
+31 16992 /tmp/tmpwDR_KX/ 15 6.00 1
+31 16990 /tmp/tmpwDR_KX/ 13 6.50 1
+31 17028 /tmp/tmpwDR_KX/ 9 3.60 1
+31 17000 /tmp/tmpwDR_KX/ 10 8.00 1
+31 16999 /tmp/tmpwDR_KX/ 23 5.60 1
+31 16997 /tmp/tmpwDR_KX/ 28 4.80 1
+31 17001 /tmp/tmpwDR_KX/ 24 8.00 1
+31 17002 /tmp/tmpwDR_KX/ 11 6.60 1
+31 16993 /tmp/tmpwDR_KX/ 10 7.00 1
+31 17005 /tmp/tmpwDR_KX/ 53 6.40 1
+
+32 16992 /tmp/tmpwDR_KX/ 15 6.00 1
+32 16990 /tmp/tmpwDR_KX/ 13 6.50 1
+32 17028 /tmp/tmpwDR_KX/ 9 3.60 1
+32 17000 /tmp/tmpwDR_KX/ 10 8.00 1
+32 16999 /tmp/tmpwDR_KX/ 24 6.00 1
+32 16997 /tmp/tmpwDR_KX/ 28 4.80 1
+32 17001 /tmp/tmpwDR_KX/ 26 8.80 1
+32 17002 /tmp/tmpwDR_KX/ 12 7.20 1
+32 16993 /tmp/tmpwDR_KX/ 10 7.00 1
+32 17005 /tmp/tmpwDR_KX/ 54 6.60 1
+
+33 16992 /tmp/tmpwDR_KX/ 16 6.40 1
+33 16990 /tmp/tmpwDR_KX/ 14 7.00 1
+33 17028 /tmp/tmpwDR_KX/ 10 4.00 1
+33 17000 /tmp/tmpwDR_KX/ 10 8.00 1
+33 16999 /tmp/tmpwDR_KX/ 25 8.00 1
+33 16997 /tmp/tmpwDR_KX/ 30 5.10 1
+33 17001 /tmp/tmpwDR_KX/ 26 8.80 1
+33 17002 /tmp/tmpwDR_KX/ 12 7.20 1
+33 16993 /tmp/tmpwDR_KX/ 10 7.00 1
+33 17005 /tmp/tmpwDR_KX/ 57 6.80 1
+
+34 16992 /tmp/tmpwDR_KX/ 16 6.40 1
+34 16990 /tmp/tmpwDR_KX/ 14 7.00 1
+34 17028 /tmp/tmpwDR_KX/ 10 4.00 1
+34 17000 /tmp/tmpwDR_KX/ 11 8.80 1
+34 16999 /tmp/tmpwDR_KX/ 25 8.00 1
+34 16997 /tmp/tmpwDR_KX/ 30 5.10 1
+34 17001 /tmp/tmpwDR_KX/ 28 9.60 1
+34 17002 /tmp/tmpwDR_KX/ 12 7.20 1
+34 16993 /tmp/tmpwDR_KX/ 11 7.70 1
+34 17005 /tmp/tmpwDR_KX/ 58 7.20 1
+
+35 16992 /tmp/tmpwDR_KX/ 17 6.80 1
+35 16990 /tmp/tmpwDR_KX/ 14 7.00 1
+35 17028 /tmp/tmpwDR_KX/ 10 4.00 1
+35 17000 /tmp/tmpwDR_KX/ 11 8.80 1
+35 16999 /tmp/tmpwDR_KX/ 26 6.40 1
+35 16997 /tmp/tmpwDR_KX/ 31 7.00 1
+35 17001 /tmp/tmpwDR_KX/ 28 9.60 1
+35 17002 /tmp/tmpwDR_KX/ 13 7.80 1
+35 16993 /tmp/tmpwDR_KX/ 11 7.70 1
+35 17005 /tmp/tmpwDR_KX/ 59 5.40 1
+
+36 16992 /tmp/tmpwDR_KX/ 17 6.80 1
+36 16990 /tmp/tmpwDR_KX/ 15 7.50 1
+36 17028 /tmp/tmpwDR_KX/ 11 4.40 1
+36 17000 /tmp/tmpwDR_KX/ 11 8.80 1
+36 16999 /tmp/tmpwDR_KX/ 28 6.80 1
+36 16997 /tmp/tmpwDR_KX/ 32 5.40 1
+36 17001 /tmp/tmpwDR_KX/ 28 9.60 1
+36 17002 /tmp/tmpwDR_KX/ 13 7.80 1
+36 16993 /tmp/tmpwDR_KX/ 11 7.70 1
+36 17005 /tmp/tmpwDR_KX/ 61 7.80 1
+
+37 16992 /tmp/tmpwDR_KX/ 18 7.20 1
+37 16990 /tmp/tmpwDR_KX/ 15 7.50 1
+37 17028 /tmp/tmpwDR_KX/ 11 4.40 1
+37 17000 /tmp/tmpwDR_KX/ 11 8.80 1
+37 16999 /tmp/tmpwDR_KX/ 28 6.80 1
+37 16997 /tmp/tmpwDR_KX/ 32 5.40 1
+37 17001 /tmp/tmpwDR_KX/ 30 10.40 1
+37 17002 /tmp/tmpwDR_KX/ 13 7.80 1
+37 16993 /tmp/tmpwDR_KX/ 11 7.70 1
+37 17005 /tmp/tmpwDR_KX/ 63 5.70 1
+
+38 16992 /tmp/tmpwDR_KX/ 18 7.20 1
+38 16990 /tmp/tmpwDR_KX/ 16 8.00 1
+38 17028 /tmp/tmpwDR_KX/ 12 4.80 1
+38 17000 /tmp/tmpwDR_KX/ 12 9.60 1
+38 16999 /tmp/tmpwDR_KX/ 29 7.20 1
+38 16997 /tmp/tmpwDR_KX/ 34 7.50 1
+38 17001 /tmp/tmpwDR_KX/ 30 10.40 1
+38 17002 /tmp/tmpwDR_KX/ 14 8.40 1
+38 16993 /tmp/tmpwDR_KX/ 12 8.40 1
+38 17005 /tmp/tmpwDR_KX/ 65 8.40 1
+
+39 16992 /tmp/tmpwDR_KX/ 19 7.60 1
+39 16990 /tmp/tmpwDR_KX/ 16 8.00 1
+39 17028 /tmp/tmpwDR_KX/ 12 4.80 1
+39 17000 /tmp/tmpwDR_KX/ 12 9.60 1
+39 16999 /tmp/tmpwDR_KX/ 30 9.60 1
+39 16997 /tmp/tmpwDR_KX/ 34 7.50 1
+39 17001 /tmp/tmpwDR_KX/ 31 10.80 1
+39 17002 /tmp/tmpwDR_KX/ 14 8.40 1
+39 16993 /tmp/tmpwDR_KX/ 12 8.40 1
+39 17005 /tmp/tmpwDR_KX/ 67 8.40 1
+
+40 16992 /tmp/tmpwDR_KX/ 19 7.60 1
+40 16990 /tmp/tmpwDR_KX/ 16 8.00 1
+40 17028 /tmp/tmpwDR_KX/ 12 4.80 1
+40 17000 /tmp/tmpwDR_KX/ 12 9.60 1
+40 16999 /tmp/tmpwDR_KX/ 30 9.60 1
+40 16997 /tmp/tmpwDR_KX/ 35 6.00 1
+40 17001 /tmp/tmpwDR_KX/ 31 10.80 1
+40 17002 /tmp/tmpwDR_KX/ 14 8.40 1
+40 16993 /tmp/tmpwDR_KX/ 12 8.40 1
+40 17005 /tmp/tmpwDR_KX/ 68 8.00 1
+
+41 16992 /tmp/tmpwDR_KX/ 20 8.00 1
+41 16990 /tmp/tmpwDR_KX/ 17 8.50 1
+41 17028 /tmp/tmpwDR_KX/ 13 5.20 1
+41 17000 /tmp/tmpwDR_KX/ 12 9.60 1
+41 16999 /tmp/tmpwDR_KX/ 31 7.60 1
+41 16997 /tmp/tmpwDR_KX/ 36 8.00 1
+41 17001 /tmp/tmpwDR_KX/ 32 11.20 1
+41 17002 /tmp/tmpwDR_KX/ 15 9.00 1
+41 16993 /tmp/tmpwDR_KX/ 13 9.10 1
+41 17005 /tmp/tmpwDR_KX/ 70 9.00 1
+
+42 16992 /tmp/tmpwDR_KX/ 20 8.00 1
+42 16990 /tmp/tmpwDR_KX/ 17 8.50 1
+42 17028 /tmp/tmpwDR_KX/ 13 5.20 1
+42 17000 /tmp/tmpwDR_KX/ 13 10.40 1
+42 16999 /tmp/tmpwDR_KX/ 32 10.40 1
+42 16997 /tmp/tmpwDR_KX/ 37 6.30 1
+42 17001 /tmp/tmpwDR_KX/ 33 11.40 1
+42 17002 /tmp/tmpwDR_KX/ 15 9.00 1
+42 16993 /tmp/tmpwDR_KX/ 13 9.10 1
+42 17005 /tmp/tmpwDR_KX/ 73 6.60 1
+
+43 16992 /tmp/tmpwDR_KX/ 20 8.00 1
+43 16990 /tmp/tmpwDR_KX/ 17 8.50 1
+43 17028 /tmp/tmpwDR_KX/ 14 5.60 1
+43 17000 /tmp/tmpwDR_KX/ 13 10.40 1
+43 16999 /tmp/tmpwDR_KX/ 33 8.00 1
+43 16997 /tmp/tmpwDR_KX/ 38 8.50 1
+43 17001 /tmp/tmpwDR_KX/ 33 11.40 1
+43 17002 /tmp/tmpwDR_KX/ 15 9.00 1
+43 16993 /tmp/tmpwDR_KX/ 13 9.10 1
+43 17005 /tmp/tmpwDR_KX/ 73 6.60 1
+
+44 16992 /tmp/tmpwDR_KX/ 21 8.40 1
+44 16990 /tmp/tmpwDR_KX/ 18 9.00 1
+44 17028 /tmp/tmpwDR_KX/ 14 5.60 1
+44 17000 /tmp/tmpwDR_KX/ 13 10.40 1
+44 16999 /tmp/tmpwDR_KX/ 34 8.40 1
+44 16997 /tmp/tmpwDR_KX/ 39 6.60 1
+44 17001 /tmp/tmpwDR_KX/ 35 12.00 1
+44 17002 /tmp/tmpwDR_KX/ 16 9.60 1
+44 16993 /tmp/tmpwDR_KX/ 14 9.80 1
+44 17005 /tmp/tmpwDR_KX/ 77 8.80 1
+
+45 16992 /tmp/tmpwDR_KX/ 21 8.40 1
+45 16990 /tmp/tmpwDR_KX/ 18 9.00 1
+45 17028 /tmp/tmpwDR_KX/ 15 6.00 1
+45 17000 /tmp/tmpwDR_KX/ 14 11.20 1
+45 16999 /tmp/tmpwDR_KX/ 34 8.40 1
+45 16997 /tmp/tmpwDR_KX/ 41 9.00 1
+45 17001 /tmp/tmpwDR_KX/ 35 12.00 1
+45 17002 /tmp/tmpwDR_KX/ 16 9.60 1
+45 16993 /tmp/tmpwDR_KX/ 14 9.80 1
+45 17005 /tmp/tmpwDR_KX/ 77 8.80 1
+
+46 16992 /tmp/tmpwDR_KX/ 22 8.80 1
+46 16990 /tmp/tmpwDR_KX/ 19 9.50 1
+46 17028 /tmp/tmpwDR_KX/ 15 6.00 1
+46 17000 /tmp/tmpwDR_KX/ 14 11.20 1
+46 16999 /tmp/tmpwDR_KX/ 36 11.20 1
+46 16997 /tmp/tmpwDR_KX/ 41 9.00 1
+46 17001 /tmp/tmpwDR_KX/ 36 12.80 1
+46 17002 /tmp/tmpwDR_KX/ 16 9.60 1
+46 16993 /tmp/tmpwDR_KX/ 14 9.80 1
+46 17005 /tmp/tmpwDR_KX/ 80 10.20 1
+
+47 16992 /tmp/tmpwDR_KX/ 22 8.80 1
+47 16990 /tmp/tmpwDR_KX/ 19 9.50 1
+47 17028 /tmp/tmpwDR_KX/ 16 6.40 1
+47 17000 /tmp/tmpwDR_KX/ 15 12.00 1
+47 16999 /tmp/tmpwDR_KX/ 36 11.20 1
+47 16997 /tmp/tmpwDR_KX/ 43 9.50 1
+47 17001 /tmp/tmpwDR_KX/ 37 12.60 1
+47 17002 /tmp/tmpwDR_KX/ 17 10.20 1
+47 16993 /tmp/tmpwDR_KX/ 15 10.50 1
+47 17005 /tmp/tmpwDR_KX/ 81 10.20 1
+
+48 16992 /tmp/tmpwDR_KX/ 23 9.20 1
+48 16990 /tmp/tmpwDR_KX/ 20 10.00 1
+48 17028 /tmp/tmpwDR_KX/ 16 6.40 1
+48 17000 /tmp/tmpwDR_KX/ 15 12.00 1
+48 16999 /tmp/tmpwDR_KX/ 37 9.20 1
+48 16997 /tmp/tmpwDR_KX/ 43 9.50 1
+48 17001 /tmp/tmpwDR_KX/ 37 12.60 1
+48 17002 /tmp/tmpwDR_KX/ 17 10.20 1
+48 16993 /tmp/tmpwDR_KX/ 15 10.50 1
+48 17005 /tmp/tmpwDR_KX/ 83 9.60 1
+
+49 16992 /tmp/tmpwDR_KX/ 23 9.20 1
+49 16990 /tmp/tmpwDR_KX/ 20 10.00 1
+49 17028 /tmp/tmpwDR_KX/ 17 6.80 1
+49 17000 /tmp/tmpwDR_KX/ 15 12.00 1
+49 16999 /tmp/tmpwDR_KX/ 37 9.20 1
+49 16997 /tmp/tmpwDR_KX/ 44 7.50 1
+49 17001 /tmp/tmpwDR_KX/ 38 13.60 1
+49 17002 /tmp/tmpwDR_KX/ 17 10.20 1
+49 16993 /tmp/tmpwDR_KX/ 15 10.50 1
+49 17005 /tmp/tmpwDR_KX/ 84 10.80 1
+
+50 16992 /tmp/tmpwDR_KX/ 24 9.60 1
+50 16990 /tmp/tmpwDR_KX/ 20 10.00 1
+50 17028 /tmp/tmpwDR_KX/ 17 6.80 1
+50 17000 /tmp/tmpwDR_KX/ 16 12.80 1
+50 16999 /tmp/tmpwDR_KX/ 39 9.60 1
+50 16997 /tmp/tmpwDR_KX/ 45 10.00 1
+50 17001 /tmp/tmpwDR_KX/ 39 13.20 1
+50 17002 /tmp/tmpwDR_KX/ 18 10.80 1
+50 16993 /tmp/tmpwDR_KX/ 16 11.20 1
+50 17005 /tmp/tmpwDR_KX/ 86 10.00 1
+
+
+
+test valgrind FAILED (0 of 6)
+ (essentially, manyclients2 run for longer and with valgrind)
+ failed to display stats correctly for pid: 16994
+ Valgrind error, check error section of summary
+
+**********************************************************************
+Summary:
+test build PASSED
+ (build project using make)
+
+test linttest PASSED (6 of 6)
+ (Lint test for C programming style)
+
+test clientnoservertest PASSED (6 of 6)
+ (Client should exit gracefully if no server is running)
+
+test defaultargstest PASSED (6 of 6)
+ (Test that client chooses default values for unspecified args)
+
+test clientservertest PASSED (6 of 6)
+ (Test basic functionality for one client & server)
+
+test twoservers1 PASSED (6 of 6)
+ (Check that two servers can run with different keys)
+
+test twoservers2 PASSED (6 of 6)
+ (Check that two servers with same key can't run concurrently)
+
+test twoservers3 PASSED (6 of 6)
+ (Check that two servers with same key can run in sequence)
+
+test manyclients PASSED (6 of 6)
+ (Check that up to 16 clients can run concurrently)
+
+test manyclients2 PASSED (6 of 6)
+ (Check that when a client leaves, another can enter)
+
+test valgrind FAILED (0 of 6)
+ (essentially, manyclients2 run for longer and with valgrind)
+ failed to display stats correctly for pid: 16994
+ Valgrind error, check error section of summary
+
+Passed 10 of 11 tests.
+Overall 10 of 11
+Points 54 of 60

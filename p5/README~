@@ -1,0 +1,25 @@
+Project 5
+Authors
+  KAI LI
+    CSLogin: kail
+    WiscID: kli66
+  VISHNU SAI RAO SURESH LOKHANDE
+    CSLogin: lokhande
+    WiscID: lokhande
+
+
+Description
+  Part A:
+    Developed a file system checker which reads a file system image
+  and determines it's consistency. 
+    Used mmap() function to create a mapping of the file system image 
+  in the virtual address space .
+    Used pointer arthemetic to navigate over the file system image.
+
+  Part B:
+    Implemented new file type in xv6 kernel that enables checksum 
+  functionalities.
+    Modified file system to handle read and write differently for the 
+  above mentioned file type.
+    Created user program that displays specific information of a given file.
+

@@ -1,0 +1,9 @@
+PART A
+The task was to use shared memory segments across server and client.
+Client keeps updating certain statistics and server posts these
+statistics periodically. Semaphores were also added to provide
+mutual exclusion.
+
+PART B
+Added shared memory segments in xv6 which facilitate different processes 
+to share memory pages

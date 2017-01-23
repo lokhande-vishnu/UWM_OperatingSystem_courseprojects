@@ -1,0 +1,13 @@
+#include "types.h"
+#include "stat.h"
+#include "user.h"
+#include "fs.h"
+
+int
+main(int argc, char *argv[])
+{
+  //printf(1,"argc:%d and argv[0]:%s and argv[1]:%s\n",argc,argv[0],argv[1]);
+  
+  printf(1,"%d\n",getnumsyscallp());
+  exit();
+}

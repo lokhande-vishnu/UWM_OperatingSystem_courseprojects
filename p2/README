@@ -1,0 +1,13 @@
+PART A
+Implemented a command line interpreter (shell).
+
+PART B
+Implemented an MLFQ scheduler on xv6. A pdf called
+graph.pdf shows the graph and provides description. Four cases of
+workloads have been considered and these are inspired from the
+test cases provided.
+
+A directory has been created for each of the four cases of workloads
+which store the information about which process runs at which tick.
+The four directories are put in a directory named "plots". Hence to look for
+files for the workload named abc, look into xv6/plots/abc

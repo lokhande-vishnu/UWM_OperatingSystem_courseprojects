@@ -1,0 +1,410 @@
+starting build
+
+**********************************************************************
+
+Test build
+build xv6 using make
+
+**********************************************************************
+Trying to build project using make
+make
+make: *** No targets specified and no makefile found.  Stop.
+
+
+test build FAILED
+ (build xv6 using make)
+ make failed (error 2)
+ required file 'xv6.img' does not exist after make
+ required file 'fs.img' does not exist after make
+
+starting shmgetat_invalid_input
+
+**********************************************************************
+
+Test shmgetat_invalid_input
+shmgetat invalid input test
+
+**********************************************************************
+Running xv6 user progam /u/c/s/cs537-1/ta/tests/3b/ctests/shmgetat_invalid_input.c
+IOError: [Errno 2] No such file or directory: '/tmp/tmpbRSWDx/p/user/tester.c'
+
+
+test shmgetat_invalid_input FAILED (0 of 10)
+ (shmgetat invalid input test)
+ Unexpected exception [Errno 2] No such file or directory: '/tmp/tmpbRSWDx/p/user/tester.c'
+
+starting shmgetat_return_value
+
+**********************************************************************
+
+Test shmgetat_return_value
+shmgetat(X, 1) return value needs to be one of last 4 pages of virtual address space; first access needs to return last virtual page, second access needs to return second to last virtual page, etc.
+
+**********************************************************************
+Running xv6 user progam /u/c/s/cs537-1/ta/tests/3b/ctests/shmgetat_return_value.c
+IOError: [Errno 2] No such file or directory: '/tmp/tmpbRSWDx/p/user/tester.c'
+
+
+test shmgetat_return_value FAILED (0 of 10)
+ (shmgetat(X, 1) return value needs to be one of last 4 pages of virtual address space; first access needs to return last virtual page, second access needs to return second to last virtual page, etc.)
+ Unexpected exception [Errno 2] No such file or directory: '/tmp/tmpbRSWDx/p/user/tester.c'
+
+starting shmgetat_return_value2
+
+**********************************************************************
+
+Test shmgetat_return_value2
+shmgetat(X, Y) return value needs to correpond to the base of correct of virtual address space page
+
+**********************************************************************
+Running xv6 user progam /u/c/s/cs537-1/ta/tests/3b/ctests/shmgetat_return_value2.c
+IOError: [Errno 2] No such file or directory: '/tmp/tmpbRSWDx/p/user/tester.c'
+
+
+test shmgetat_return_value2 FAILED (0 of 10)
+ (shmgetat(X, Y) return value needs to correpond to the base of correct of virtual address space page)
+ Unexpected exception [Errno 2] No such file or directory: '/tmp/tmpbRSWDx/p/user/tester.c'
+
+starting shmgetat_double_call
+
+**********************************************************************
+
+Test shmgetat_double_call
+shmgetat called twice with same key, making sure same physical page is not mapped into 2 different places in virtual address space
+
+**********************************************************************
+Running xv6 user progam /u/c/s/cs537-1/ta/tests/3b/ctests/shmgetat_double_call.c
+IOError: [Errno 2] No such file or directory: '/tmp/tmpbRSWDx/p/user/tester.c'
+
+
+test shmgetat_double_call FAILED (0 of 10)
+ (shmgetat called twice with same key, making sure same physical page is not mapped into 2 different places in virtual address space)
+ Unexpected exception [Errno 2] No such file or directory: '/tmp/tmpbRSWDx/p/user/tester.c'
+
+starting shmgetat_double_call_fork
+
+**********************************************************************
+
+Test shmgetat_double_call_fork
+shmgetat called once in parent process. It is then called again after fork in child process. The address received should be the same address the parent process received.
+
+**********************************************************************
+Running xv6 user progam /u/c/s/cs537-1/ta/tests/3b/ctests/shmgetat_double_call_fork.c
+IOError: [Errno 2] No such file or directory: '/tmp/tmpbRSWDx/p/user/tester.c'
+
+
+test shmgetat_double_call_fork FAILED (0 of 10)
+ (shmgetat called once in parent process. It is then called again after fork in child process. The address received should be the same address the parent process received.)
+ Unexpected exception [Errno 2] No such file or directory: '/tmp/tmpbRSWDx/p/user/tester.c'
+
+starting shmgetat_read_write
+
+**********************************************************************
+
+Test shmgetat_read_write
+making sure shared pages are readable and writable
+
+**********************************************************************
+Running xv6 user progam /u/c/s/cs537-1/ta/tests/3b/ctests/shmgetat_read_write.c
+IOError: [Errno 2] No such file or directory: '/tmp/tmpbRSWDx/p/user/tester.c'
+
+
+test shmgetat_read_write FAILED (0 of 10)
+ (making sure shared pages are readable and writable)
+ Unexpected exception [Errno 2] No such file or directory: '/tmp/tmpbRSWDx/p/user/tester.c'
+
+starting shmgetat_communication
+
+**********************************************************************
+
+Test shmgetat_communication
+one process writing something and the other process reading it.
+
+**********************************************************************
+Running xv6 user progam /u/c/s/cs537-1/ta/tests/3b/ctests/shmgetat_communication.c
+IOError: [Errno 2] No such file or directory: '/tmp/tmpbRSWDx/p/user/tester.c'
+
+
+test shmgetat_communication FAILED (0 of 10)
+ (one process writing something and the other process reading it.)
+ Unexpected exception [Errno 2] No such file or directory: '/tmp/tmpbRSWDx/p/user/tester.c'
+
+starting shmgetat_full_address_space
+
+**********************************************************************
+
+Test shmgetat_full_address_space
+shmgetat should failed if the entire address space is full.
+
+**********************************************************************
+Running xv6 user progam /u/c/s/cs537-1/ta/tests/3b/ctests/shmgetat_full_address_space.c
+IOError: [Errno 2] No such file or directory: '/tmp/tmpbRSWDx/p/user/tester.c'
+
+
+test shmgetat_full_address_space FAILED (0 of 10)
+ (shmgetat should failed if the entire address space is full.)
+ Unexpected exception [Errno 2] No such file or directory: '/tmp/tmpbRSWDx/p/user/tester.c'
+
+starting shmgetat_full_address_space2
+
+**********************************************************************
+
+Test shmgetat_full_address_space2
+sbrk should not allocate and go past a shared memory.
+
+**********************************************************************
+Running xv6 user progam /u/c/s/cs537-1/ta/tests/3b/ctests/shmgetat_full_address_space2.c
+IOError: [Errno 2] No such file or directory: '/tmp/tmpbRSWDx/p/user/tester.c'
+
+
+test shmgetat_full_address_space2 FAILED (0 of 10)
+ (sbrk should not allocate and go past a shared memory.)
+ Unexpected exception [Errno 2] No such file or directory: '/tmp/tmpbRSWDx/p/user/tester.c'
+
+starting shmgetat_exec
+
+**********************************************************************
+
+Test shmgetat_exec
+a new exec-ed program should not have access to shared pages when it begins.
+
+**********************************************************************
+Running xv6 user progam /u/c/s/cs537-1/ta/tests/3b/ctests/shmgetat_exec.c
+IOError: [Errno 2] No such file or directory: '/tmp/tmpbRSWDx/p/user/tester.c'
+
+
+test shmgetat_exec FAILED (0 of 10)
+ (a new exec-ed program should not have access to shared pages when it begins.)
+ Unexpected exception [Errno 2] No such file or directory: '/tmp/tmpbRSWDx/p/user/tester.c'
+
+starting shmgetat_exec2
+
+**********************************************************************
+
+Test shmgetat_exec2
+a new exec-ed program should reallocate virtual pages if shmgetat is called.
+
+**********************************************************************
+Running xv6 user progam /u/c/s/cs537-1/ta/tests/3b/ctests/shmgetat_exec2.c
+IOError: [Errno 2] No such file or directory: '/tmp/tmpbRSWDx/p/user/tester.c'
+
+
+test shmgetat_exec2 FAILED (0 of 10)
+ (a new exec-ed program should reallocate virtual pages if shmgetat is called.)
+ Unexpected exception [Errno 2] No such file or directory: '/tmp/tmpbRSWDx/p/user/tester.c'
+
+starting shmgetat_syscall_args
+
+**********************************************************************
+
+Test shmgetat_syscall_args
+making sure pointers from shared pages can be successfully passed to system calls. ***NOTE*** only open and write system calls are tested here; when grading, we may change the test to any other system call that may take pointers.
+
+**********************************************************************
+Running xv6 user progam /u/c/s/cs537-1/ta/tests/3b/ctests/shmgetat_syscall_args.c
+IOError: [Errno 2] No such file or directory: '/tmp/tmpbRSWDx/p/user/tester.c'
+
+
+test shmgetat_syscall_args FAILED (0 of 10)
+ (making sure pointers from shared pages can be successfully passed to system calls. ***NOTE*** only open and write system calls are tested here; when grading, we may change the test to any other system call that may take pointers.)
+ Unexpected exception [Errno 2] No such file or directory: '/tmp/tmpbRSWDx/p/user/tester.c'
+
+starting shm_refcount_invalid_input
+
+**********************************************************************
+
+Test shm_refcount_invalid_input
+shm_refcount invalid input test
+
+**********************************************************************
+Running xv6 user progam /u/c/s/cs537-1/ta/tests/3b/ctests/shm_refcount_invalid_input.c
+IOError: [Errno 2] No such file or directory: '/tmp/tmpbRSWDx/p/user/tester.c'
+
+
+test shm_refcount_invalid_input FAILED (0 of 10)
+ (shm_refcount invalid input test)
+ Unexpected exception [Errno 2] No such file or directory: '/tmp/tmpbRSWDx/p/user/tester.c'
+
+starting shm_refcount_zero
+
+**********************************************************************
+
+Test shm_refcount_zero
+shm_refcount should return 0 if no one is referencing the page.
+
+**********************************************************************
+Running xv6 user progam /u/c/s/cs537-1/ta/tests/3b/ctests/shm_refcount_zero.c
+IOError: [Errno 2] No such file or directory: '/tmp/tmpbRSWDx/p/user/tester.c'
+
+
+test shm_refcount_zero FAILED (0 of 10)
+ (shm_refcount should return 0 if no one is referencing the page.)
+ Unexpected exception [Errno 2] No such file or directory: '/tmp/tmpbRSWDx/p/user/tester.c'
+
+starting shm_refcount_zero2
+
+**********************************************************************
+
+Test shm_refcount_zero2
+shm_refcount should return 0 after child process accesses and exits.
+
+**********************************************************************
+Running xv6 user progam /u/c/s/cs537-1/ta/tests/3b/ctests/shm_refcount_zero2.c
+IOError: [Errno 2] No such file or directory: '/tmp/tmpbRSWDx/p/user/tester.c'
+
+
+test shm_refcount_zero2 FAILED (0 of 10)
+ (shm_refcount should return 0 after child process accesses and exits.)
+ Unexpected exception [Errno 2] No such file or directory: '/tmp/tmpbRSWDx/p/user/tester.c'
+
+starting shm_refcount_one
+
+**********************************************************************
+
+Test shm_refcount_one
+shm_refcount should return 1 after 1 access.
+
+**********************************************************************
+Running xv6 user progam /u/c/s/cs537-1/ta/tests/3b/ctests/shm_refcount_one.c
+IOError: [Errno 2] No such file or directory: '/tmp/tmpbRSWDx/p/user/tester.c'
+
+
+test shm_refcount_one FAILED (0 of 10)
+ (shm_refcount should return 1 after 1 access.)
+ Unexpected exception [Errno 2] No such file or directory: '/tmp/tmpbRSWDx/p/user/tester.c'
+
+starting shm_refcount_one2
+
+**********************************************************************
+
+Test shm_refcount_one2
+shm_refcount should return 1 after 2 accesses to the same page.
+
+**********************************************************************
+Running xv6 user progam /u/c/s/cs537-1/ta/tests/3b/ctests/shm_refcount_one2.c
+IOError: [Errno 2] No such file or directory: '/tmp/tmpbRSWDx/p/user/tester.c'
+
+
+test shm_refcount_one2 FAILED (0 of 10)
+ (shm_refcount should return 1 after 2 accesses to the same page.)
+ Unexpected exception [Errno 2] No such file or directory: '/tmp/tmpbRSWDx/p/user/tester.c'
+
+starting shm_refcount_fork
+
+**********************************************************************
+
+Test shm_refcount_fork
+shm_refcount should return 2 after fork if the parent process has accessed a shared page.
+
+**********************************************************************
+Running xv6 user progam /u/c/s/cs537-1/ta/tests/3b/ctests/shm_refcount_fork.c
+IOError: [Errno 2] No such file or directory: '/tmp/tmpbRSWDx/p/user/tester.c'
+
+
+test shm_refcount_fork FAILED (0 of 10)
+ (shm_refcount should return 2 after fork if the parent process has accessed a shared page.)
+ Unexpected exception [Errno 2] No such file or directory: '/tmp/tmpbRSWDx/p/user/tester.c'
+
+starting shm_refcount_exec
+
+**********************************************************************
+
+Test shm_refcount_exec
+Exec should decrement count for shared pages. Parent accesses a shared page, then it forks. Child performs exec to start a new program. In the new program, the count for the shared page should be 1.
+
+**********************************************************************
+Running xv6 user progam /u/c/s/cs537-1/ta/tests/3b/ctests/shm_refcount_exec.c
+IOError: [Errno 2] No such file or directory: '/tmp/tmpbRSWDx/p/user/tester.c'
+
+
+test shm_refcount_exec FAILED (0 of 10)
+ (Exec should decrement count for shared pages. Parent accesses a shared page, then it forks. Child performs exec to start a new program. In the new program, the count for the shared page should be 1.)
+ Unexpected exception [Errno 2] No such file or directory: '/tmp/tmpbRSWDx/p/user/tester.c'
+
+**********************************************************************
+Summary:
+test build FAILED
+ (build xv6 using make)
+ make failed (error 2)
+ required file 'xv6.img' does not exist after make
+ required file 'fs.img' does not exist after make
+
+test shmgetat_invalid_input FAILED (0 of 10)
+ (shmgetat invalid input test)
+ Unexpected exception [Errno 2] No such file or directory: '/tmp/tmpbRSWDx/p/user/tester.c'
+
+test shmgetat_return_value FAILED (0 of 10)
+ (shmgetat(X, 1) return value needs to be one of last 4 pages of virtual address space; first access needs to return last virtual page, second access needs to return second to last virtual page, etc.)
+ Unexpected exception [Errno 2] No such file or directory: '/tmp/tmpbRSWDx/p/user/tester.c'
+
+test shmgetat_return_value2 FAILED (0 of 10)
+ (shmgetat(X, Y) return value needs to correpond to the base of correct of virtual address space page)
+ Unexpected exception [Errno 2] No such file or directory: '/tmp/tmpbRSWDx/p/user/tester.c'
+
+test shmgetat_double_call FAILED (0 of 10)
+ (shmgetat called twice with same key, making sure same physical page is not mapped into 2 different places in virtual address space)
+ Unexpected exception [Errno 2] No such file or directory: '/tmp/tmpbRSWDx/p/user/tester.c'
+
+test shmgetat_double_call_fork FAILED (0 of 10)
+ (shmgetat called once in parent process. It is then called again after fork in child process. The address received should be the same address the parent process received.)
+ Unexpected exception [Errno 2] No such file or directory: '/tmp/tmpbRSWDx/p/user/tester.c'
+
+test shmgetat_read_write FAILED (0 of 10)
+ (making sure shared pages are readable and writable)
+ Unexpected exception [Errno 2] No such file or directory: '/tmp/tmpbRSWDx/p/user/tester.c'
+
+test shmgetat_communication FAILED (0 of 10)
+ (one process writing something and the other process reading it.)
+ Unexpected exception [Errno 2] No such file or directory: '/tmp/tmpbRSWDx/p/user/tester.c'
+
+test shmgetat_full_address_space FAILED (0 of 10)
+ (shmgetat should failed if the entire address space is full.)
+ Unexpected exception [Errno 2] No such file or directory: '/tmp/tmpbRSWDx/p/user/tester.c'
+
+test shmgetat_full_address_space2 FAILED (0 of 10)
+ (sbrk should not allocate and go past a shared memory.)
+ Unexpected exception [Errno 2] No such file or directory: '/tmp/tmpbRSWDx/p/user/tester.c'
+
+test shmgetat_exec FAILED (0 of 10)
+ (a new exec-ed program should not have access to shared pages when it begins.)
+ Unexpected exception [Errno 2] No such file or directory: '/tmp/tmpbRSWDx/p/user/tester.c'
+
+test shmgetat_exec2 FAILED (0 of 10)
+ (a new exec-ed program should reallocate virtual pages if shmgetat is called.)
+ Unexpected exception [Errno 2] No such file or directory: '/tmp/tmpbRSWDx/p/user/tester.c'
+
+test shmgetat_syscall_args FAILED (0 of 10)
+ (making sure pointers from shared pages can be successfully passed to system calls. ***NOTE*** only open and write system calls are tested here; when grading, we may change the test to any other system call that may take pointers.)
+ Unexpected exception [Errno 2] No such file or directory: '/tmp/tmpbRSWDx/p/user/tester.c'
+
+test shm_refcount_invalid_input FAILED (0 of 10)
+ (shm_refcount invalid input test)
+ Unexpected exception [Errno 2] No such file or directory: '/tmp/tmpbRSWDx/p/user/tester.c'
+
+test shm_refcount_zero FAILED (0 of 10)
+ (shm_refcount should return 0 if no one is referencing the page.)
+ Unexpected exception [Errno 2] No such file or directory: '/tmp/tmpbRSWDx/p/user/tester.c'
+
+test shm_refcount_zero2 FAILED (0 of 10)
+ (shm_refcount should return 0 after child process accesses and exits.)
+ Unexpected exception [Errno 2] No such file or directory: '/tmp/tmpbRSWDx/p/user/tester.c'
+
+test shm_refcount_one FAILED (0 of 10)
+ (shm_refcount should return 1 after 1 access.)
+ Unexpected exception [Errno 2] No such file or directory: '/tmp/tmpbRSWDx/p/user/tester.c'
+
+test shm_refcount_one2 FAILED (0 of 10)
+ (shm_refcount should return 1 after 2 accesses to the same page.)
+ Unexpected exception [Errno 2] No such file or directory: '/tmp/tmpbRSWDx/p/user/tester.c'
+
+test shm_refcount_fork FAILED (0 of 10)
+ (shm_refcount should return 2 after fork if the parent process has accessed a shared page.)
+ Unexpected exception [Errno 2] No such file or directory: '/tmp/tmpbRSWDx/p/user/tester.c'
+
+test shm_refcount_exec FAILED (0 of 10)
+ (Exec should decrement count for shared pages. Parent accesses a shared page, then it forks. Child performs exec to start a new program. In the new program, the count for the shared page should be 1.)
+ Unexpected exception [Errno 2] No such file or directory: '/tmp/tmpbRSWDx/p/user/tester.c'
+
+Passed 0 of 20 tests.
+Overall 0 of 20
+Points 0 of 190
