@@ -1,0 +1,1 @@
+python plot.py -i proc_3 proc_4 proc_5 proc_6 proc_7 proc_8 proc_9 -o TUout.pdf -t "Priority Upgrade Test Schedule Plot" -x "Ticks" -y "Priority"

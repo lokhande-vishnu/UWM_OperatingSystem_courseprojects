@@ -1,0 +1,1 @@
+python plot.py -i proc_10 proc_11 proc_12 proc_13 proc_14 proc_15 proc_16 proc_17 proc_18 proc_19 proc_20 proc_21 proc_22 proc_23 proc_4 proc_5 proc_6 proc_7 proc_8 proc_9 -o MJout.pdf -t "Multiple Jobs Schedule Plot" -x "Ticks" -y "Priority"

@@ -1,0 +1,73 @@
+summary
+  add checksum to filesystem
+  if unexpected checksum result
+    corruption
+  need to check the on disk format of the file system (add checksum on top of the existing ptr to file)
+
+
+
+
+file to look at
+  include/stat.h
+
+
+  sysfile.c
+    sys_open()
+      when creating file, add new flag to selected file?
+
+
+
+  file.c (fielread/ filewrite)
+  file.h
+    inode struct definition
+    disk inode (uint addrs[NDIRECT + 1 (indirect ptr for large files)])
+    change direct ptr from 4 bytes to 3 bytes + 1 checksum byte(most-significant byte)
+
+  fs.c (writei)
+    writei for loop
+      bread()/ bwrite() (buffer cache)
+    bmap()!!!
+       write/allocation of block
+       storing inode
+
+    basically need to change everything that modifies inodes addrs[] (ip->addrs[])
+
+  create a new file type
+    if filetype == checkfile (T_CHECK)
+      implement new functionality
+    pass new flag to identify the new file type
+
+  No need to change the behavior for all diff kind file
+
+
+
+changelog
+  include/fcntl.h
+      add new flag O_CHECKED
+  include/stat.h
+      modified to requirements as in proj description
+      new flag(not mentioned in web description but added in video)
+  
+  kernel/sysfile.c
+    sys_open()
+      add new case to handle the O_CHECKED flag case
+    create()
+      add new case to handle the O_CHECKED flag case
+    nothing fancy, just copy default behavior for O_FILE to O_CHECKED
+
+  kernel/fs.c
+    bmap()
+      added bitmask to retrive only the lower 3 bytes if filetype == T_CHECKED
+    itrunc()
+      added bitmask to retrive only the lower 3 bytes if filetype == T_CHECKED
+    stati()
+      update checksum, handle direct link and indirect link separately
+    readi()
+      check inode sum against cache sum, again handle direct link and indirect link
+    writei()
+      similar to readi()
+
+        
+        
+      
+  

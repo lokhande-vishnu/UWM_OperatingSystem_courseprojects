@@ -1,0 +1,1 @@
+python plot.py -i proc_3 proc_4 -o NPout.pdf -t "New Process Schedule Plot" -x "Ticks" -y "Priority"

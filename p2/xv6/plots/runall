@@ -1,0 +1,11 @@
+cd MJ
+source doplt
+cd ../NP
+source doplt
+cd ../RR
+source doplt
+cd ../SL
+source doplt
+cd ../TU
+source doplt
+cd ..

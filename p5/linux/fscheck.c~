@@ -1,0 +1,316 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <unistd.h>
+#include <assert.h>
+#include <sys/mman.h>
+#include "fs.h"
+#include <string.h>
+
+int main(int argc, char *argv[]) {
+  int fd = open(argv[1],O_RDONLY);
+  if(fd == -1){
+    fprintf(stderr,"image not found.\n");
+    exit(1);
+  }
+
+  
+  // fstat to know the size of the file
+  int rc;
+  struct stat sbuf;
+  rc = fstat(fd, &sbuf);
+  assert(rc == 0);
+  
+  // Mapping the file image to the address space
+  void *img = mmap(NULL, sbuf.st_size, PROT_READ, MAP_PRIVATE, fd, 0);
+  assert(img != MAP_FAILED);
+   
+  struct superblock *sb;
+  sb = (struct superblock *) (img + BSIZE);
+  //  printf("sb: sz%d nb%d ni%d ipb%lu\n",sb->size,sb->nblocks,sb->ninodes,IPB);
+
+  // Number of bitmaps blocks
+  uint nbitmaps = (sb->nblocks)/(512*8) + 1;
+  //printf("nbitmaps%d BPB%u\n",nbitmaps,BPB);
+
+  // Number of inode blocks
+  uint nind_blocks = (sb->ninodes)/IPB + 1;
+  
+  // Start address of data blocks
+  uint b_start =  2 + nind_blocks + nbitmaps;
+  //printf("bstart %d\n",b_start);
+
+  // An array to check if address has been used twice
+  uint u_blocks[sb->nblocks];
+  int k;
+  for (k = 0; k < sb->nblocks; k++)
+    u_blocks[k] = 0;
+  
+  // Array for storing used inodes
+  uint uind_table[sb->ninodes]; // Used inodes in the table
+  uint uind_dir[sb->ninodes]; // Used inodes in the direct
+  for (k = 0; k < sb->nblocks; k++) {
+    uind_dir[k] = 0;
+    uind_table[k] = 0;
+  }
+  
+  
+  // Scanning through all the inodes
+  int i,j;
+  struct dinode *dinp = (struct dinode *) (img + 2*BSIZE);
+  for (i = 0; i < sb->ninodes; i++) {
+
+    // Error no 1
+    if (dinp->type != 0 && dinp->type != T_FILE && dinp->type != T_DEV && dinp->type != T_DIR) {
+      fprintf(stderr,"ERROR: bad inode.\n");
+      exit(1);
+    }
+
+    // Traversing the addresses pointed by all inodes
+    if (dinp->type != 0) {
+      for (j = 0; j < NDIRECT + 1; j++) {
+        if (dinp->addrs[j] != 0) {
+
+          // Error no 2
+          if(dinp->addrs[j] < b_start || dinp->addrs[j] >= sb->size){
+            fprintf(stderr,"ERROR: bad address in inode.\n");
+            exit(1);
+          }
+
+          //Error no 6: addrss used by inode but marked free
+          uint* bit_strt = (uint *)(img + (b_start - nbitmaps)*BSIZE);
+          uint* byt = (uint *)(bit_strt + (dinp->addrs[j] - b_start)/32);
+          uint offst = 31 - ((dinp->addrs[j] - b_start) % 32);
+          if (!(*byt & (1 << offst))) {
+            fprintf(stderr,"ERROR: address used by inode but marked free in bitmap.\n");
+            exit(1);
+          }
+          
+          // Error no. 8: address used more than once
+          if (u_blocks[dinp->addrs[j] - b_start] == 1) {
+            fprintf(stderr,"ERROR: address used more than once.\n");
+            exit(1);
+          } else {
+            u_blocks[dinp->addrs[j] - b_start] = 1;
+          }
+
+          // Error no. 30
+          
+        }
+      }
+      
+      if(dinp->addrs[NDIRECT] != 0) {
+        for (j = 0; j < NINDIRECT; j++) {
+          uint* ndaddr = (uint*)(img + dinp->addrs[NDIRECT]*BSIZE + j*sizeof(uint));
+          if (*ndaddr != 0) {
+
+            // Error no 2
+            if(*ndaddr < b_start || *ndaddr >= sb->size){
+              fprintf(stderr,"ERROR: bad address in inode.\n");
+              exit(1);
+            }
+
+          // Error no 6: addrss used by inode but marked free
+            uint* bit_strt = (uint *)(img + (b_start - nbitmaps)*BSIZE);
+            uint* byt = (uint *)(bit_strt + ((*ndaddr) - b_start)/32);
+            uint offst = 31 - (((*ndaddr) - b_start) % 32);
+            if (!((*byt) & (1 << offst))) {
+              fprintf(stderr,"ERROR: address used by inode but marked free in bitmap.\n");
+              exit(1);
+            }
+            
+            // Error no. 8: address used more than once
+            if (u_blocks[(*ndaddr) - b_start] == 1) {
+            fprintf(stderr,"ERROR: address used more than once.\n");
+            exit(1);
+          } else {
+              u_blocks[(*ndaddr) - b_start] = 1;
+          }
+
+
+          // Error no. 30
+
+          }
+        }
+      }
+    }
+    // Error 4 put before Error 3 because of a test case
+    
+    // Error no 4: Directory not formatted properly
+    if (dinp->type == T_DIR) {
+      struct dirent * root_dp = (struct dirent *)(img + dinp->addrs[0]*BSIZE);
+      if (strncmp(root_dp->name, ".\0", 1)) {
+        fprintf(stderr,"ERROR: directory not properly formatted.\n");
+        exit(1);
+      }
+      root_dp++;
+      if (strncmp(root_dp->name, "..\0", 2)) {
+        fprintf(stderr,"ERROR: directory not properly formatted.\n");
+        exit(1);
+      }
+    }
+
+    // Error no 3: Root directory exists
+    if (i == ROOTINO) {
+      
+      if (dinp->addrs[0] == 0) {
+        fprintf(stderr,"ERROR: root directory does not exist.\n");
+        exit(1);
+      }
+      struct dirent * root_dir = (struct dirent *)(img + dinp->addrs[0]*BSIZE);
+      if (root_dir->inum != ROOTINO){
+        fprintf(stderr,"ERROR: root directory does not exist.\n");
+        exit(1);
+      }
+      root_dir++;
+      if (root_dir->inum != ROOTINO){
+        fprintf(stderr,"ERROR: root directory does not exist.\n");
+        exit(1);
+      }
+      /*      printf("error %u %s\n",root_dir->inum, root_dir->name);
+      root_dir++;
+      printf("1error %u %s\n",root_dir->inum, root_dir->name);
+      root_dir++;
+      printf("2error %u %s\n",root_dir->inum, root_dir->name);
+      */
+      
+    }
+
+
+    // Error no. 9, 10
+    if (dinp->type != 0)
+      uind_table[i]++;
+    // Traversing all the directories to identify used inodes
+    if (dinp->type ==  T_DIR) {
+      for (j = 0; j < NDIRECT + 1; j++) {
+        if (dinp->addrs[j] != 0) {
+          struct dirent * ptr = (struct dirent *)(img + dinp->addrs[j]*BSIZE);
+          int n;
+          for (n = 0; n < DPB; n++) {
+           
+            //            printf("i:%d j:%d inum:%u iname:%s\n", i,j,ptr->inum,ptr->name);
+            if(ptr->inum <= 0 && ptr->inum >= sb->ninodes){
+              ptr++;
+              continue;
+            } 
+            if ((strncmp(ptr->name, ".\0", 1) == 0) || (strncmp(ptr->name, "..\0", 2) == 0)) {
+              ptr++;
+              continue;
+            }
+
+            uind_dir[ptr->inum]++;
+            ptr++;
+          }          
+        }
+      }
+      if(dinp->addrs[NDIRECT] != 0) {
+        for (j = 0; j < NINDIRECT; j++) {
+          uint* ndaddr = (uint*)(img + dinp->addrs[NDIRECT]*BSIZE + j*sizeof(uint));
+          if (*ndaddr != 0) {
+            struct dirent * ptr = (struct dirent *)(img + (*ndaddr)*BSIZE);
+            int n;
+            for (n = 0; n < DPB; n++) {
+              //       printf("2i:%d j:%d inum:%u iname:%s\n", i,j,ptr->inum,ptr->name);
+ 
+              if(ptr->inum <= 0 && ptr->inum >= sb->ninodes){
+                ptr++;
+                continue;
+              } 
+              if ((strncmp(ptr->name, ".\0", 1) == 0) || (strncmp(ptr->name, "..\0", 2) == 0)) {
+                ptr++;
+                continue;
+              }
+            
+          
+              uind_dir[ptr->inum]++;
+              ptr++;
+            }
+          }
+        }
+      }
+    }
+    
+    
+
+    
+    dinp++;
+    
+  }
+
+  
+  int l;
+
+  
+  // Error no. 7
+  // To compare the bitmap and u_blocks
+  //  if (!(*byt & (1 << offst))) {
+  //  int offst = 31;      
+  for (l = 0; l < sb->nblocks; l++) {
+    uint* strt2 = (uint *)(img + (3 + sb->ninodes/IPB)*BSIZE);
+    uint* byt2 = (uint *)(strt2 + l/32);
+    uint offst2 = 31 - (l % 32);
+  
+    uint ans = u_blocks[l];
+    printf("l%d la%u ",l,ans); 
+    printf("by%u off%d an%u\n",*byt2,offst2,(*byt2 & (1 << offst2)));
+    if ((*byt2 & (1 << offst2))) {
+      if (u_blocks[l] == 0){
+        //fprintf(stderr,"ERROR: bitmap marks block in use but it is not in use.\n");
+        //exit(1);
+      }
+    }
+    /*offst--;
+    if (offst < 0) {
+      printf("\n");
+      strt++;
+      offst = 31;
+      }*/
+  }
+  
+  
+  // Error no. 9
+  for(l = 2; l < sb->ninodes; l++) {
+    //    fprintf(stdout,"vis%d uind_table:%d uind_dir:%d\n", l, uind_table[l], uind_dir[l]);
+    if (uind_table[l] != 0 && uind_dir[l] == 0) {
+      fprintf(stderr,"ERROR: inode marked use but not found in a directory.\n");
+      exit(1);
+    }
+  }
+
+  // Error no. 10
+  for(l = 2; l < sb->ninodes; l++) {
+    // fprintf(stdout,"vis%d uind_table:%d uind_dir:%d\n", l, uind_table[l], uind_dir[l]);
+    if (uind_dir[l] != 0 && uind_table[l] == 0) {
+      fprintf(stderr,"ERROR: inode referred to in directory but marked free.\n");
+      exit(1);
+    }
+  }
+  
+
+  // Error no. 11
+  dinp = (struct dinode *) (img + 2*BSIZE);
+  for (i = 0; i < sb->ninodes; i++) {
+    if (dinp->type == T_FILE) {
+      if (dinp->nlink != uind_dir[i]) {
+        fprintf(stderr,"ERROR: bad reference count for file.\n");
+        exit(1);
+      }
+    }
+
+    if (dinp->type == T_DIR && (i != 1)) {
+      if (uind_dir[i] != 1) {
+        fprintf(stderr,"ERROR: directory appears more than once in file system.\n");
+        exit(1);
+      }
+    }
+
+
+
+    
+    dinp++;
+  }
+  
+  return 0;
+}
